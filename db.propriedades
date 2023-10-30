@@ -1,0 +1,4 @@
+user=root
+password=
+dburl=jdbc:mariadb://127.0.0.1:3306/db_symples3
+userSSL=false
