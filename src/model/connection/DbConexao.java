@@ -1,4 +1,4 @@
-package controller.service;
+package model.connection;
 
 import java.io.FileInputStream;
 import java.io.IOException;

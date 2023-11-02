@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import controller.exception.DbException;
-import controller.service.DbConexao;
+import model.connection.DbConexao;
 import model.dao.ParticipanteEventoDao;
 import model.entidades.TabEndereco;
 import model.entidades.TabEventos;

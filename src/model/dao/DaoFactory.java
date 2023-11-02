@@ -1,6 +1,6 @@
 package model.dao;
 
-import controller.service.DbConexao;
+import model.connection.DbConexao;
 import model.dao.impl.EnderecoDaoJDBC;
 import model.dao.impl.EventosDaoJDBC;
 import model.dao.impl.ParticipanteEventoDaoJDBC;

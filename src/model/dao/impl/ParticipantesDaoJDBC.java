@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.exception.DbException;
-import controller.service.DbConexao;
+import model.connection.DbConexao;
 import model.dao.ParticipantesDao;
 import model.entidades.TabParticipantes;
 

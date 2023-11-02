@@ -58,7 +58,7 @@ public class JCadastroEvento extends JFrame {
 	 * Create the frame.
 	 */
 	public JCadastroEvento() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 803, 353);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -201,7 +201,6 @@ public class JCadastroEvento extends JFrame {
 				novoTabEvento.setIngressos(Integer.parseInt(textFieldQtdIngresso.getText()));
 				
 				System.out.print("Categoria: ");
-				LeitorTeclado.clearInput();
 				novoTabEvento.setCategoria(textFieldCategoria.getText());
 				
 //				---------------- Captura Endereco ---------------
@@ -223,14 +222,6 @@ public class JCadastroEvento extends JFrame {
 		});
 		btnCadastrar.setBounds(23, 25, 117, 25);
 		panelTabela.add(btnCadastrar);
-		
-		JButton btnAtualizar = new JButton("Atualizar");
-		btnAtualizar.setBounds(183, 25, 117, 25);
-		panelTabela.add(btnAtualizar);
-		
-		JButton btnRemover = new JButton("Remover");
-		btnRemover.setBounds(342, 25, 117, 25);
-		panelTabela.add(btnRemover);
 		
 		JButton btnFinalizar = new JButton("Finalizar");
 		btnFinalizar.setBounds(612, 25, 117, 25);

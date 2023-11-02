@@ -46,7 +46,7 @@ public class JListaParticipantePorEvento extends JFrame {
 	 * Create the frame.
 	 */
 	public JListaParticipantePorEvento() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 960, 512);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -79,7 +79,7 @@ public class JListaParticipantePorEvento extends JFrame {
 				 
 				 DefaultTableModel dtmEventos = (DefaultTableModel) table.getModel();
 				 
-				 boolean valorBoleano = ingressosComprado.buscaEventoParticipante(numeroConvertido, dtmEventos);
+				 boolean valorBoleano = ingressosComprado.buscaEventoPorParticipante(numeroConvertido, dtmEventos);
 				 
 				 if (valorBoleano == false) {
 					 JOptionPane.showMessageDialog(btnPesquisar, "Nenhum participante encontrado para este Evento!", "Aviso!", JOptionPane.WARNING_MESSAGE);

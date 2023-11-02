@@ -119,7 +119,7 @@ public class Ingressos{
 	}
 	
 	
-	public boolean buscaParticipanteEvento(String cpf, DefaultTableModel dtmEventos) {
+	public boolean buscaParticipantePorEvento(String cpf, DefaultTableModel dtmEventos) {
 
 		boolean valorBoleano = false;
 		List<TabParticipanteEvento> listParticipanteEvento = selectParticipanteEvento();
@@ -144,7 +144,7 @@ public class Ingressos{
 //						
 //						);
 				
-				Object[] dados = {tabParticipanteEvento.getCodigo_idParticipante().getNomeParticipante(), tabParticipanteEvento.getCodigo_idParticipante().getCpf(), 
+				Object[] dados = {tabParticipanteEvento.getId_ParticipanteEvento(), tabParticipanteEvento.getCodigo_idParticipante().getNomeParticipante(), tabParticipanteEvento.getCodigo_idParticipante().getCpf(), 
 						tabParticipanteEvento.getCodigo_idParticipante().getEmail(), tabParticipanteEvento.getCodigo_idEvento().getNomeEvento(),
 						tabParticipanteEvento.getCodigo_idEvento().getCodigoEndereco().getLogradouro(), tabParticipanteEvento.getCodigo_idEvento().getCodigoEndereco().getNumLocal(),
 						tabParticipanteEvento.getCodigo_idEvento().getCodigoEndereco().getBairro(), tabParticipanteEvento.getCodigo_idEvento().getCodigoEndereco().getLocalidade() +
@@ -164,7 +164,7 @@ public class Ingressos{
 	}
 	
 	
-	public boolean buscaEventoParticipante(Integer idEvento,  DefaultTableModel dtmEventos) {
+	public boolean buscaEventoPorParticipante(Integer idEvento,  DefaultTableModel dtmEventos) {
 		
 		boolean valorBoleano = false;
 		

@@ -15,17 +15,22 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.producao.Eventos;
 import model.entidades.TabEventos;
+import model.entidades.TabParticipantes;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
-public class JListaEventos extends JFrame {
+public class JCompraIngresso extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
 	
 	private static Integer linhaIdEvento;
+	private JTextField textFieldNome;
+	private JTextField textFieldCPF;
+	private JTextField textFieldEmail;
 
 	/**
 	 * Launch the application.
@@ -37,7 +42,7 @@ public class JListaEventos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					JListaEventos frame = new JListaEventos();
+					JCompraIngresso frame = new JCompraIngresso();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -49,9 +54,9 @@ public class JListaEventos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public JListaEventos() {
+	public JCompraIngresso() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 989, 526);
+		setBounds(100, 100, 991, 547);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -59,22 +64,22 @@ public class JListaEventos extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel panelTitulo = new JPanel();
-		panelTitulo.setBounds(12, 10, 955, 83);
+		panelTitulo.setBounds(12, 10, 955, 45);
 		contentPane.add(panelTitulo);
 		panelTitulo.setLayout(null);
 		
-		JLabel lblListaDeEventos = new JLabel("Lista de Eventos");
-		lblListaDeEventos.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblListaDeEventos.setBounds(390, 30, 238, 15);
-		panelTitulo.add(lblListaDeEventos);
+		JLabel lblTelaCompra = new JLabel("Comprando Ingresso");
+		lblTelaCompra.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblTelaCompra.setBounds(377, 12, 238, 21);
+		panelTitulo.add(lblTelaCompra);
 		
 		JPanel panelTabela = new JPanel();
-		panelTabela.setBounds(12, 105, 955, 282);
+		panelTabela.setBounds(12, 67, 965, 262);
 		contentPane.add(panelTabela);
 		panelTabela.setLayout(null);
 		
 		JScrollPane scrollPaneTabela = new JScrollPane();
-		scrollPaneTabela.setBounds(12, 12, 931, 258);
+		scrollPaneTabela.setBounds(12, 12, 931, 238);
 		panelTabela.add(scrollPaneTabela);
 		
 		table = new JTable();
@@ -88,9 +93,36 @@ public class JListaEventos extends JFrame {
 		scrollPaneTabela.setViewportView(table);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(12, 396, 955, 88);
+		panel.setBounds(12, 341, 965, 162);
 		contentPane.add(panel);
 		panel.setLayout(null);
+		
+		JLabel lblNome = new JLabel("Nome");
+		lblNome.setBounds(25, 37, 40, 15);
+		panel.add(lblNome);
+		
+		textFieldNome = new JTextField();
+		textFieldNome.setColumns(10);
+		textFieldNome.setBounds(28, 58, 356, 19);
+		panel.add(textFieldNome);
+		
+		JLabel lblCpf = new JLabel("CPF");
+		lblCpf.setBounds(446, 37, 70, 15);
+		panel.add(lblCpf);
+		
+		textFieldCPF = new JTextField();
+		textFieldCPF.setColumns(10);
+		textFieldCPF.setBounds(446, 58, 134, 19);
+		panel.add(textFieldCPF);
+		
+		JLabel lblEmail = new JLabel("E-mail");
+		lblEmail.setBounds(650, 37, 70, 15);
+		panel.add(lblEmail);
+		
+		textFieldEmail = new JTextField();
+		textFieldEmail.setColumns(10);
+		textFieldEmail.setBounds(650, 58, 295, 19);
+		panel.add(textFieldEmail);
 		
 		JButton btnComprar = new JButton("Comprar");
 		btnComprar.addActionListener(new ActionListener() {
@@ -98,20 +130,21 @@ public class JListaEventos extends JFrame {
 				
 				if (table.getSelectedRow() != -1) {
 					
-					TabEventos tabEvento = new TabEventos();
+//					TabEventos tabEvento = new TabEventos();
 					DefaultTableModel dtmEventos = (DefaultTableModel) table.getModel();
 					
 					linhaIdEvento = (Integer) dtmEventos.getValueAt(table.getSelectedRow(), 0);
-					tabEvento.setIdEvento(linhaIdEvento);
+//					tabEvento.setIdEvento(linhaIdEvento);
 					
 					setLinhaIdEvento(linhaIdEvento); // guarda o id selecionado pelo usuário
 					
+					TabParticipantes novoParticipante = new TabParticipantes();
+					novoParticipante.setNomeParticipante(textFieldNome.getText());
+					novoParticipante.setCpf(textFieldCPF.getText());
+					novoParticipante.setEmail(textFieldEmail.getText());
 					
-					dispose();
-					JCadastroParticipante jCadastroParticipante = new JCadastroParticipante();
-					jCadastroParticipante.setLocationRelativeTo(btnComprar);
-					jCadastroParticipante.setVisible(true);
-					System.out.println("Escolheu: " + getLinhaIdEvento());
+					Eventos evento = new Eventos();
+					evento.comprarIngresso(linhaIdEvento, novoParticipante);
 					
 
 				} else {
@@ -119,7 +152,7 @@ public class JListaEventos extends JFrame {
 				}
 			}
 		});
-		btnComprar.setBounds(398, 12, 117, 25);
+		btnComprar.setBounds(352, 122, 117, 25);
 		panel.add(btnComprar);
 		
 		JButton btnSair = new JButton("Sair");
@@ -131,7 +164,7 @@ public class JListaEventos extends JFrame {
 				jOpcaoParticipante.setVisible(true);
 			}
 		});
-		btnSair.setBounds(826, 51, 117, 25);
+		btnSair.setBounds(828, 122, 117, 25);
 		panel.add(btnSair);
 		
 //		Inserindo dados na tebela
@@ -146,7 +179,7 @@ public class JListaEventos extends JFrame {
 	}
 
 	public void setLinhaIdEvento(Integer linhaIdEvento) {
-		JListaEventos.linhaIdEvento = linhaIdEvento;
+		JCompraIngresso.linhaIdEvento = linhaIdEvento;
 	}
 	
 	

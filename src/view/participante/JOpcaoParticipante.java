@@ -80,7 +80,7 @@ public class JOpcaoParticipante extends JFrame {
 		btnConsultarIngresso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				JPesquisaIngresso jPesquisaIngresso = new JPesquisaIngresso();
+				JPesquisaIngressoCPF jPesquisaIngresso = new JPesquisaIngressoCPF();
 				jPesquisaIngresso.setLocationRelativeTo(btnConsultarIngresso);
 				jPesquisaIngresso.setVisible(true);
 			}

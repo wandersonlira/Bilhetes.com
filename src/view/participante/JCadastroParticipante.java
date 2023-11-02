@@ -14,6 +14,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.border.TitledBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class JCadastroParticipante extends JFrame {
 
@@ -101,6 +103,13 @@ public class JCadastroParticipante extends JFrame {
 		textFieldEmail.setColumns(10);
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				JListaEventos jListaEvento = new JListaEventos();
+				System.out.println("Cheguei no cadastro: " + jListaEvento.getLinhaIdEvento());
+			}
+		});
 		btnCadastrar.setBounds(22, 82, 117, 25);
 		panelCadastro.add(btnCadastrar);
 		
