@@ -103,9 +103,6 @@ public class JPesquisaIngressoCPF extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				JOpcaoParticipante jOpcaoProdutor = new JOpcaoParticipante();
-				jOpcaoProdutor.setLocationRelativeTo(lblListandoParticipantePor);
-				jOpcaoProdutor.setVisible(true);
 			}
 		});
 		btnVoltar.setBounds(786, 24, 117, 25);

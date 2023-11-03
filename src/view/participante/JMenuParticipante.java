@@ -114,6 +114,14 @@ public class JMenuParticipante extends JFrame {
 		});
 		
 		JMenuItem mntmAtualizarCadastro = new JMenuItem("Atualizar Cadastro");
+		mntmAtualizarCadastro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				JAtualizaCadastro jAtualizaCadastro = new JAtualizaCadastro();
+				jAtualizaCadastro.setLocationRelativeTo(mntmAtualizarCadastro);
+				jAtualizaCadastro.setVisible(true);
+			}
+		});
 		mnParticipante.add(mntmAtualizarCadastro);
 		
 		JMenu mnSobre = new JMenu("Sobre");

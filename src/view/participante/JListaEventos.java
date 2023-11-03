@@ -126,9 +126,6 @@ public class JListaEventos extends JFrame {
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				JOpcaoParticipante jOpcaoParticipante = new JOpcaoParticipante();
-				jOpcaoParticipante.setLocationRelativeTo(btnSair);
-				jOpcaoParticipante.setVisible(true);
 			}
 		});
 		btnSair.setBounds(826, 51, 117, 25);

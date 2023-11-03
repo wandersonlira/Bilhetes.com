@@ -2,6 +2,8 @@ package view.participante;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,16 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.producao.Eventos;
-import model.entidades.TabEventos;
 import model.entidades.TabParticipantes;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JTextField;
 
 public class JCompraIngresso extends JFrame {
 
@@ -27,7 +25,6 @@ public class JCompraIngresso extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	
-	private static Integer linhaIdEvento;
 	private JTextField textFieldNome;
 	private JTextField textFieldCPF;
 	private JTextField textFieldEmail;
@@ -130,21 +127,30 @@ public class JCompraIngresso extends JFrame {
 				
 				if (table.getSelectedRow() != -1) {
 					
-//					TabEventos tabEvento = new TabEventos();
 					DefaultTableModel dtmEventos = (DefaultTableModel) table.getModel();
 					
-					linhaIdEvento = (Integer) dtmEventos.getValueAt(table.getSelectedRow(), 0);
-//					tabEvento.setIdEvento(linhaIdEvento);
-					
-					setLinhaIdEvento(linhaIdEvento); // guarda o id selecionado pelo usuário
-					
+					Integer linhaIdEvento = (Integer) dtmEventos.getValueAt(table.getSelectedRow(), 0); // guarda o id selecionado pelo usuário
+							
 					TabParticipantes novoParticipante = new TabParticipantes();
 					novoParticipante.setNomeParticipante(textFieldNome.getText());
 					novoParticipante.setCpf(textFieldCPF.getText());
 					novoParticipante.setEmail(textFieldEmail.getText());
 					
 					Eventos evento = new Eventos();
-					evento.comprarIngresso(linhaIdEvento, novoParticipante);
+					boolean statusCompra = evento.comprarIngresso(linhaIdEvento, novoParticipante);
+					
+					if (statusCompra == true) {
+						JOptionPane.showMessageDialog(btnComprar, 
+								"Nº Evento: " + dtmEventos.getValueAt(table.getSelectedRow(), 0) 
+								+ "\nNome: " + dtmEventos.getValueAt(table.getSelectedRow(), 1)
+								+ "\nData: " + dtmEventos.getValueAt(table.getSelectedRow(), 2)
+								+ "\nHora: " + dtmEventos.getValueAt(table.getSelectedRow(), 3)
+								+ "\nLocal/UF: " + dtmEventos.getValueAt(table.getSelectedRow(), 4), 
+								"COMPRADO!", JOptionPane.WARNING_MESSAGE);
+								dispose();
+					} else {
+						JOptionPane.showMessageDialog(btnComprar, "--- INGRESSO ESGOTADO! ---", "Aviso!", JOptionPane.WARNING_MESSAGE);
+					}
 					
 
 				} else {
@@ -159,9 +165,6 @@ public class JCompraIngresso extends JFrame {
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				JOpcaoParticipante jOpcaoParticipante = new JOpcaoParticipante();
-				jOpcaoParticipante.setLocationRelativeTo(btnSair);
-				jOpcaoParticipante.setVisible(true);
 			}
 		});
 		btnSair.setBounds(828, 122, 117, 25);
@@ -172,16 +175,7 @@ public class JCompraIngresso extends JFrame {
 		Eventos.exibirEventos(dtmEventos);
 
 		
-	}
-
-	public Integer getLinhaIdEvento() {
-		return linhaIdEvento;
-	}
-
-	public void setLinhaIdEvento(Integer linhaIdEvento) {
-		JCompraIngresso.linhaIdEvento = linhaIdEvento;
-	}
-	
+	}	
 	
 	
 }

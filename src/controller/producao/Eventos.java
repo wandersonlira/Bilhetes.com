@@ -164,7 +164,9 @@ public class Eventos {
 	
 	
 	
-	public void comprarIngresso(Integer codEvento, TabParticipantes novoParticipante) {
+	public boolean comprarIngresso(Integer codEvento, TabParticipantes novoParticipante) {
+		
+		boolean statusCompra = true;
 		
 		EventosDao eventoDao = DaoFactory.createEventos();
 		TabEventos tabEventos = new TabEventos();
@@ -186,8 +188,11 @@ public class Eventos {
 			System.out.println("Qtd disponível: " + (tabEventos.getIngressos() - tabEventos.getIngressoComprado()));
 			
 		} else {
+			statusCompra = false;
 			System.out.println(" --- INGRESSO ESGOTADO! --- ");	
-			}	
+			}
+		
+		return statusCompra;	
 
 	}
 

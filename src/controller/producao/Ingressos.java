@@ -130,20 +130,6 @@ public class Ingressos{
 				
 				valorBoleano = true;
 				
-//				System.out.println(
-//						 "Nome: " + tabParticipanteEvento.getCodigo_idParticipante().getNomeParticipante()
-//						+ "\nCPF: " + tabParticipanteEvento.getCodigo_idParticipante().getCpf()
-//						+ "\nE-mail: " + tabParticipanteEvento.getCodigo_idParticipante().getEmail()
-//						+ "\n\nEvento: " + tabParticipanteEvento.getCodigo_idEvento().getNomeEvento()
-//						+ "\nRua: " + tabParticipanteEvento.getCodigo_idEvento().getCodigoEndereco().getLogradouro()
-//						+ ", " + tabParticipanteEvento.getCodigo_idEvento().getCodigoEndereco().getNumLocal()
-//						+ "\nBairro: " + tabParticipanteEvento.getCodigo_idEvento().getCodigoEndereco().getBairro()
-//						+ "\nCidade: " + tabParticipanteEvento.getCodigo_idEvento().getCodigoEndereco().getLocalidade()
-//						+ "/" + tabParticipanteEvento.getCodigo_idEvento().getCodigoEndereco().getUf()
-//						+ "\n---------------"
-//						
-//						);
-				
 				Object[] dados = {tabParticipanteEvento.getId_ParticipanteEvento(), tabParticipanteEvento.getCodigo_idParticipante().getNomeParticipante(), tabParticipanteEvento.getCodigo_idParticipante().getCpf(), 
 						tabParticipanteEvento.getCodigo_idParticipante().getEmail(), tabParticipanteEvento.getCodigo_idEvento().getNomeEvento(),
 						tabParticipanteEvento.getCodigo_idEvento().getCodigoEndereco().getLogradouro(), tabParticipanteEvento.getCodigo_idEvento().getCodigoEndereco().getNumLocal(),
@@ -154,11 +140,7 @@ public class Ingressos{
 			}
 				
 		}
-		
-//		if (valorBoleano != true) {
-//			System.out.println("Nenhum ingresso encontrado para este CPF!");
-//		}
-		
+			
 		return valorBoleano;
 		
 	}

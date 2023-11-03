@@ -113,14 +113,6 @@ public class JCadastroParticipante extends JFrame {
 		btnCadastrar.setBounds(22, 82, 117, 25);
 		panelCadastro.add(btnCadastrar);
 		
-		JButton btnRemover = new JButton("Remover");
-		btnRemover.setBounds(179, 82, 117, 25);
-		panelCadastro.add(btnRemover);
-		
-		JButton btnAtualizar = new JButton("Atualizar");
-		btnAtualizar.setBounds(333, 82, 117, 25);
-		panelCadastro.add(btnAtualizar);
-		
 		JButton btnPrximo = new JButton("Próximo");
 		btnPrximo.setBounds(697, 82, 117, 25);
 		panelCadastro.add(btnPrximo);

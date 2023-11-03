@@ -68,7 +68,9 @@ public class ParticipantesDaoJDBC implements ParticipantesDao{
 		
 
 	@Override
-	public void update(TabParticipantes objeto) {
+	public boolean update(TabParticipantes objeto) {
+		
+		boolean statusUpdate = true; 
 		
 		PreparedStatement stConsulta = null;
 		
@@ -91,6 +93,7 @@ public class ParticipantesDaoJDBC implements ParticipantesDao{
 				
 			} else {
 				System.out.println("Houve um erro inesperado... nenhuma linha afetada!!");
+				statusUpdate = false;
 			}
 		
 		} catch (SQLException e) {
@@ -99,6 +102,8 @@ public class ParticipantesDaoJDBC implements ParticipantesDao{
 		} finally {
 			DbConexao.closeStatement(stConsulta);
 			}
+		
+		return statusUpdate;
 		
 	}
 	

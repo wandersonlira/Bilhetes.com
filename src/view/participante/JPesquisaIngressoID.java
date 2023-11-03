@@ -133,17 +133,22 @@ public class JPesquisaIngressoID extends JFrame {
 				
 				if (table.getSelectedRow() != -1) {
 					
-					DefaultTableModel dtmEventos = (DefaultTableModel) table.getModel();
+					DefaultTableModel dtmEventos = (DefaultTableModel) table.getModel(); // Instanciado para referenciar a linha e coluna que será clicada
 					
-					Integer linhaIdEvento = (Integer) dtmEventos.getValueAt(table.getSelectedRow(), 0);
-					
-					if (linhaIdEvento != 0) {
+					Integer linhaIdEvento = (Integer) dtmEventos.getValueAt(table.getSelectedRow(), 0); // pega coluna 0 na linha clicada e transforma e Integer
 						
-//						ParticipanteEventoDao participanteEventoDao = DaoFactory.createParticipanteEvento();
-//						participanteEventoDao.deleteById(linhaIdEvento);
-						System.out.println("LinhaIDEvento: " + linhaIdEvento);
+						ParticipanteEventoDao participanteEventoDao = DaoFactory.createParticipanteEvento();
+						participanteEventoDao.deleteById(linhaIdEvento);
 						
-					}
+						JOptionPane.showMessageDialog(btnRemover, 
+						"\nNº Ingresso: " + dtmEventos.getValueAt(table.getSelectedRow(), 0)
+						+ "\nEvento: " + dtmEventos.getValueAt(table.getSelectedRow(), 4)
+						+ "\nRua: " + dtmEventos.getValueAt(table.getSelectedRow(), 5) + ", " + dtmEventos.getValueAt(table.getSelectedRow(), 6)
+						+ "\nBairro: " + dtmEventos.getValueAt(table.getSelectedRow(), 7)
+						+ "\nCIdade: " + dtmEventos.getValueAt(table.getSelectedRow(), 8), 
+						"EXCLUÍDO!", JOptionPane.WARNING_MESSAGE);
+						dispose();
+						
 				} else {
 					JOptionPane.showMessageDialog(btnRemover, "Nenhuma Linha Selecionada!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 				}
