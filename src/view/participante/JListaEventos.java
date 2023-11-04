@@ -2,6 +2,8 @@ package view.participante;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,10 +16,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.producao.Eventos;
-import model.entidades.TabEventos;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class JListaEventos extends JFrame {
 
@@ -26,6 +24,7 @@ public class JListaEventos extends JFrame {
 	private JTable table;
 	
 	private static Integer linhaIdEvento;
+	private static DefaultTableModel dtmEventos;
 
 	/**
 	 * Launch the application.
@@ -92,35 +91,30 @@ public class JListaEventos extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JButton btnComprar = new JButton("Comprar");
-		btnComprar.addActionListener(new ActionListener() {
+		JButton btnProximo = new JButton("Próximo");
+		btnProximo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { // Logica para comprar ingresso
 				
 				if (table.getSelectedRow() != -1) {
 					
-					TabEventos tabEvento = new TabEventos();
-					DefaultTableModel dtmEventos = (DefaultTableModel) table.getModel();
+					dtmEventos = (DefaultTableModel) table.getModel();
 					
-					linhaIdEvento = (Integer) dtmEventos.getValueAt(table.getSelectedRow(), 0);
-					tabEvento.setIdEvento(linhaIdEvento);
-					
-					setLinhaIdEvento(linhaIdEvento); // guarda o id selecionado pelo usuário
-					
+					linhaIdEvento = (Integer) dtmEventos.getValueAt(table.getSelectedRow(), 0);			
 					
 					dispose();
 					JCadastroParticipante jCadastroParticipante = new JCadastroParticipante();
-					jCadastroParticipante.setLocationRelativeTo(btnComprar);
+					jCadastroParticipante.setLocationRelativeTo(btnProximo);
 					jCadastroParticipante.setVisible(true);
-					System.out.println("Escolheu: " + getLinhaIdEvento());
+					System.out.println("ListaEvento: " + getLinhaIdEvento());
 					
 
 				} else {
-					JOptionPane.showMessageDialog(btnComprar, "Nenhuma Linha Selecionada!", "Aviso!", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(btnProximo, "Nenhuma Linha Selecionada!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
-		btnComprar.setBounds(398, 12, 117, 25);
-		panel.add(btnComprar);
+		btnProximo.setBounds(398, 12, 117, 25);
+		panel.add(btnProximo);
 		
 		JButton btnSair = new JButton("Sair");
 		btnSair.addActionListener(new ActionListener() {
@@ -138,12 +132,20 @@ public class JListaEventos extends JFrame {
 		
 	}
 
-	public Integer getLinhaIdEvento() {
+	public static Integer getLinhaIdEvento() {
 		return linhaIdEvento;
 	}
 
-	public void setLinhaIdEvento(Integer linhaIdEvento) {
+	public static void setLinhaIdEvento(Integer linhaIdEvento) {
 		JListaEventos.linhaIdEvento = linhaIdEvento;
+	}
+
+	public static DefaultTableModel getDtmEventos() {
+		return dtmEventos;
+	}
+
+	public static void setDtmEventos(DefaultTableModel dtmEventos) {
+		JListaEventos.dtmEventos = dtmEventos;
 	}
 	
 	

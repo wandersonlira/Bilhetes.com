@@ -8,23 +8,29 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import controller.producao.CepUtils;
 import controller.producao.Eventos;
+import model.dao.DaoFactory;
+import model.dao.EventosDao;
 import model.entidades.TabEventos;
 
-public class JCadastroEvento extends JFrame {
+public class JAtualizaEvento extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -36,6 +42,8 @@ public class JCadastroEvento extends JFrame {
 	private JTextField textFieldCategoria;
 	private JTextField textFieldLocal;
 	private JTextField textFieldNumLocal;
+	private JTextField textFieldProcurar;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -44,7 +52,7 @@ public class JCadastroEvento extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					JCadastroEvento frame = new JCadastroEvento();
+					JAtualizaEvento frame = new JAtualizaEvento();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -56,9 +64,9 @@ public class JCadastroEvento extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public JCadastroEvento() {
+	public JAtualizaEvento() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 803, 353);
+		setBounds(100, 100, 880, 669);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -66,23 +74,107 @@ public class JCadastroEvento extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel panelTitulo = new JPanel();
-		panelTitulo.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
-		panelTitulo.setBounds(12, 0, 763, 65);
-		contentPane.add(panelTitulo);
 		panelTitulo.setLayout(null);
+		panelTitulo.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		panelTitulo.setBounds(50, 12, 763, 65);
+		contentPane.add(panelTitulo);
 		
-		JLabel lblCadastreSeuEvento = new JLabel("Cadastre Seu Evento");
-		lblCadastreSeuEvento.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblCadastreSeuEvento.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCadastreSeuEvento.setBounds(254, 13, 271, 47);
-		panelTitulo.add(lblCadastreSeuEvento);
+		JLabel lblAtualizaEvento = new JLabel("Atualize Seu Evento");
+		lblAtualizaEvento.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAtualizaEvento.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblAtualizaEvento.setBounds(254, 13, 271, 47);
+		panelTitulo.add(lblAtualizaEvento);
 		
 		JLabel lblOlProdutor = new JLabel("Olá, produtor! ");
 		lblOlProdutor.setBounds(12, 13, 115, 15);
 		panelTitulo.add(lblOlProdutor);
 		
+		JPanel panelTable = new JPanel();
+		panelTable.setBounds(12, 79, 846, 304);
+		contentPane.add(panelTable);
+		panelTable.setLayout(null);
+		
+		JButton btnProcurar = new JButton("Procurar");
+		btnProcurar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (!textFieldProcurar.getText().isEmpty() || !textFieldProcurar.getText().isBlank()) {
+					
+					EventosDao eventoDao = DaoFactory.createEventos();
+					List<TabEventos> listTabEvento = eventoDao.findAll();
+					
+					for (TabEventos tabEvento : listTabEvento) {
+						
+						try {
+							
+						 if (tabEvento.getIdEvento() == Integer.parseInt(textFieldProcurar.getText())) {
+								
+								DefaultTableModel dtmEvento = (DefaultTableModel) table.getModel();
+								
+								Object[] dados = {tabEvento.getIdEvento(), tabEvento.getNomeEvento(), tabEvento.getDataEvento(),
+										tabEvento.getHoraEvento(), tabEvento.getCodigoEndereco().getLogradouro() + ", " + tabEvento.getCodigoEndereco().getNumLocal(),
+										tabEvento.getCodigoEndereco().getLocalidade() + "/" + tabEvento.getCodigoEndereco().getUf() };
+								
+								dtmEvento.addRow(dados);
+							}
+						 
+						} catch (NumberFormatException meuTratamento) {
+							
+								if (tabEvento.getNomeEvento().equals(textFieldProcurar.getText()) == true) {
+									
+									DefaultTableModel dtmEvento = (DefaultTableModel) table.getModel();
+									
+									Object[] dados = {tabEvento.getIdEvento(), tabEvento.getNomeEvento(), tabEvento.getDataEvento(),
+											tabEvento.getHoraEvento(), tabEvento.getCodigoEndereco().getLogradouro() + ", " + tabEvento.getCodigoEndereco().getNumLocal(),
+											tabEvento.getCodigoEndereco().getLocalidade() + "/" + tabEvento.getCodigoEndereco().getUf() };
+									
+									dtmEvento.addRow(dados);
+								}
+								
+						}
+						
+					}
+					
+				} else {
+					System.out.println("Campo Vazio!");
+				}
+				
+			}
+		});
+		btnProcurar.setBounds(12, 22, 117, 25);
+		panelTable.add(btnProcurar);
+		
+		JLabel lblNEventoOu = new JLabel("Nº evento ou Nome");
+		lblNEventoOu.setForeground(new Color(154, 153, 150));
+		lblNEventoOu.setBounds(159, 27, 150, 15);
+		panelTable.add(lblNEventoOu);
+		
+		textFieldProcurar = new JTextField();
+		textFieldProcurar.setBounds(153, 22, 228, 25);
+		panelTable.add(textFieldProcurar);
+		textFieldProcurar.setColumns(10);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(12, 70, 822, 222);
+		panelTable.add(scrollPane);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"N\u00BA Evento", "Nome", "Data", "Hora", "Localidade", "Local/UF"
+			}
+		));
+		table.getColumnModel().getColumn(0).setPreferredWidth(46);
+		table.getColumnModel().getColumn(1).setPreferredWidth(205);
+		table.getColumnModel().getColumn(2).setPreferredWidth(117);
+		table.getColumnModel().getColumn(4).setPreferredWidth(240);
+		table.getColumnModel().getColumn(5).setPreferredWidth(123);
+		scrollPane.setViewportView(table);
+		
 		JPanel panelCadastro = new JPanel();
-		panelCadastro.setBounds(10, 72, 765, 135);
+		panelCadastro.setBounds(48, 388, 765, 135);
 		contentPane.add(panelCadastro);
 		panelCadastro.setLayout(null);
 		
@@ -158,10 +250,10 @@ public class JCadastroEvento extends JFrame {
 		panelCadastro.add(textFieldCep);
 		textFieldCep.setColumns(10);
 		
-		JPanel panelTabela = new JPanel();
-		panelTabela.setBounds(12, 219, 763, 92);
-		contentPane.add(panelTabela);
-		panelTabela.setLayout(null);
+		JPanel panelBotoes = new JPanel();
+		panelBotoes.setBounds(50, 535, 763, 92);
+		contentPane.add(panelBotoes);
+		panelBotoes.setLayout(null);
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
@@ -231,13 +323,13 @@ public class JCadastroEvento extends JFrame {
 					
 					
 				} else {
-					JOptionPane.showMessageDialog(btnCadastrar, "OS CAMPOS NÃO PODEM SER VAZIO", "Aviso!", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(btnCadastrar, "OS CAMPOS NÃO PODEM ESTAR VAZIO", "Aviso!", JOptionPane.WARNING_MESSAGE);
 				}
 				
 			}
 		});
 		btnCadastrar.setBounds(23, 25, 117, 25);
-		panelTabela.add(btnCadastrar);
+		panelBotoes.add(btnCadastrar);
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
@@ -246,6 +338,6 @@ public class JCadastroEvento extends JFrame {
 			}
 		});
 		btnVoltar.setBounds(612, 25, 117, 25);
-		panelTabela.add(btnVoltar);
+		panelBotoes.add(btnVoltar);
 	}
 }

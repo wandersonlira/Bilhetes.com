@@ -2,20 +2,24 @@ package view.participante;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.border.TitledBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import controller.producao.Eventos;
+import model.dao.DaoFactory;
+import model.dao.EventosDao;
+import model.entidades.TabEventos;
+import model.entidades.TabParticipantes;
 
 public class JCadastroParticipante extends JFrame {
 
@@ -24,7 +28,6 @@ public class JCadastroParticipante extends JFrame {
 	private JTextField textFieldNome;
 	private JTextField textFieldCPF;
 	private JTextField textFieldEmail;
-	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -46,7 +49,7 @@ public class JCadastroParticipante extends JFrame {
 	 * Create the frame.
 	 */
 	public JCadastroParticipante() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 861, 399);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -71,7 +74,7 @@ public class JCadastroParticipante extends JFrame {
 		panelTitulo.add(lblOlParticipante);
 		
 		JPanel panelCadastro = new JPanel();
-		panelCadastro.setBounds(0, 63, 851, 127);
+		panelCadastro.setBounds(12, 98, 827, 127);
 		contentPane.add(panelCadastro);
 		panelCadastro.setLayout(null);
 		
@@ -102,38 +105,62 @@ public class JCadastroParticipante extends JFrame {
 		panelCadastro.add(textFieldEmail);
 		textFieldEmail.setColumns(10);
 		
-		JButton btnCadastrar = new JButton("Cadastrar");
-		btnCadastrar.addActionListener(new ActionListener() {
+		JButton btnComprar = new JButton("Comprar");
+		btnComprar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				JListaEventos jListaEvento = new JListaEventos();
-				System.out.println("Cheguei no cadastro: " + jListaEvento.getLinhaIdEvento());
+				if (!textFieldNome.getText().isEmpty() || !textFieldNome.getText().isBlank()
+						|| !textFieldCPF.getText().isEmpty() || !textFieldCPF.getText().isBlank()
+						|| !textFieldEmail.getText().isEmpty() || !textFieldEmail.getText().isBlank()) {
+					
+					TabParticipantes novoParticipante = new TabParticipantes();
+					novoParticipante.setNomeParticipante(textFieldNome.getText());
+					novoParticipante.setCpf(textFieldCPF.getText());
+					novoParticipante.setEmail(textFieldEmail.getText());
+					
+					Integer idEventoEscolhido = JListaEventos.getLinhaIdEvento(); // Usando método Get statico da classe "JListaEventos"
+					
+					Eventos evento = new Eventos();
+					boolean statusCompra = evento.comprarIngresso(idEventoEscolhido, novoParticipante);
+					
+					if (statusCompra == true) {
+						
+						EventosDao eventoDao = DaoFactory.createEventos();
+						TabEventos tabEventos = new TabEventos();
+						
+						tabEventos = eventoDao.findById(idEventoEscolhido);
+						
+						JOptionPane.showMessageDialog(btnComprar, 
+									"\nEvento: " + tabEventos.getNomeEvento()
+								+	"\nRua: " + tabEventos.getCodigoEndereco().getLogradouro()
+								+	", " + tabEventos.getCodigoEndereco().getNumLocal()
+								+	"\nBairro: " + tabEventos.getCodigoEndereco().getBairro()
+								+	"\nCidade: " + tabEventos.getCodigoEndereco().getLocalidade()
+								+	"/" + tabEventos.getCodigoEndereco().getUf()
+								+	"\nParticipante: " + novoParticipante.getNomeParticipante(), 
+								"COMPRADO!", JOptionPane.WARNING_MESSAGE);
+								dispose();
+						
+					} else {
+						JOptionPane.showMessageDialog(btnComprar, "--- INGRESSO ESGOTADO! ---", "Aviso!", JOptionPane.WARNING_MESSAGE);
+					}
+					
+				} else {
+					JOptionPane.showMessageDialog(btnComprar, "--- DADOS NÃO PODEM ESTAR VAZIO! ---", "Aviso!", JOptionPane.WARNING_MESSAGE);
+				}
+				
 			}
 		});
-		btnCadastrar.setBounds(22, 82, 117, 25);
-		panelCadastro.add(btnCadastrar);
+		btnComprar.setBounds(22, 82, 117, 25);
+		panelCadastro.add(btnComprar);
 		
-		JButton btnPrximo = new JButton("Próximo");
-		btnPrximo.setBounds(697, 82, 117, 25);
-		panelCadastro.add(btnPrximo);
-		
-		JPanel panelTabela = new JPanel();
-		panelTabela.setBounds(10, 202, 829, 161);
-		contentPane.add(panelTabela);
-		panelTabela.setLayout(null);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 12, 805, 137);
-		panelTabela.add(scrollPane);
-		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Nome", "CPF", "E-mail"
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
-		));
-		scrollPane.setViewportView(table);
+		});
+		btnCancelar.setBounds(697, 82, 117, 25);
+		panelCadastro.add(btnCancelar);
 	}
 }

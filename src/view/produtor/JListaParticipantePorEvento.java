@@ -105,9 +105,6 @@ public class JListaParticipantePorEvento extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				JOpcaoProdutor jOpcaoProdutor = new JOpcaoProdutor();
-				jOpcaoProdutor.setLocationRelativeTo(lblListandoParticipantePor);
-				jOpcaoProdutor.setVisible(true);
 			}
 		});
 		btnVoltar.setBounds(786, 24, 117, 25);
