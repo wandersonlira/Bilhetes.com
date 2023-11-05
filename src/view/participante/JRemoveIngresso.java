@@ -21,7 +21,7 @@ import controller.producao.Ingressos;
 import model.dao.DaoFactory;
 import model.dao.ParticipanteEventoDao;
 
-public class JPesquisaIngressoID extends JFrame {
+public class JRemoveIngresso extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -35,7 +35,7 @@ public class JPesquisaIngressoID extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					JPesquisaIngressoID frame = new JPesquisaIngressoID();
+					JRemoveIngresso frame = new JRemoveIngresso();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +47,7 @@ public class JPesquisaIngressoID extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public JPesquisaIngressoID() {
+	public JRemoveIngresso() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1072, 512);
 		contentPane = new JPanel();

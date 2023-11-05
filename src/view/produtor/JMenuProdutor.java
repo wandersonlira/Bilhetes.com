@@ -36,7 +36,7 @@ public class JMenuProdutor extends JFrame {
 	 */
 	public JMenuProdutor() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 924, 466);
+		setBounds(100, 100, 810, 466);
 		setLocationRelativeTo(contentPane);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -45,12 +45,12 @@ public class JMenuProdutor extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel panelMenu = new JPanel();
-		panelMenu.setBounds(12, 12, 890, 32);
+		panelMenu.setBounds(12, 12, 776, 32);
 		contentPane.add(panelMenu);
 		panelMenu.setLayout(null);
 		
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 914, 21);
+		menuBar.setBounds(0, 0, 764, 21);
 		panelMenu.add(menuBar);
 		
 		JMenu mnEvento = new JMenu("Evento");
@@ -88,9 +88,26 @@ public class JMenuProdutor extends JFrame {
 		menuBar.add(mnEditar);
 		
 		JMenuItem mntmAtualizarEvento = new JMenuItem("Atualizar Evento");
+		mntmAtualizarEvento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				JAtualizaEvento jAtualizaEvento = new JAtualizaEvento();
+				jAtualizaEvento.setLocationRelativeTo(mntmListarParticipantes);
+				jAtualizaEvento.setVisible(true);
+			}
+		});
 		mnEditar.add(mntmAtualizarEvento);
 		
 		JMenuItem mntmRemoverEvento = new JMenuItem("Remover Evento");
+		mntmRemoverEvento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				JRemoveEvento jRemoveEvento = new JRemoveEvento();
+				jRemoveEvento.setLocationRelativeTo(mntmListarParticipantes);
+				jRemoveEvento.setVisible(true);
+				
+			}
+		});
 		mnEditar.add(mntmRemoverEvento);
 		
 		JMenu mnSobre = new JMenu("Sobre");

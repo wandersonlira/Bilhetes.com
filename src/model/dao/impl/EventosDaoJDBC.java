@@ -80,7 +80,9 @@ public class EventosDaoJDBC implements EventosDao{
 	
 
 	@Override
-	public void update(TabEventos objeto) {
+	public boolean update(TabEventos objeto) {
+		
+		boolean statusUpdate = true;
 		
 		PreparedStatement stConsulta = null;
 		
@@ -88,17 +90,17 @@ public class EventosDaoJDBC implements EventosDao{
 			stConsulta = conexao.prepareStatement(
 					"UPDATE Eventos "
 					+ "SET nomeEvento = ?, dataEvento = ?, horaEvento = ?, ingressos = ?, "
-					+ "ingressoComprado = ?, categoria = ?, codigoEndereco = ? "
+					+ /*"ingressoComprado = ?,*/ "categoria = ?, codigoEndereco = ? "
 					+ "WHERE idEvento = ?");
 			
 			stConsulta.setString(1, objeto.getNomeEvento());
 			stConsulta.setDate(2, new java.sql.Date(objeto.getDataEvento().getTime()));
 			stConsulta.setString(3, objeto.getHoraEvento());
 			stConsulta.setInt(4, objeto.getIngressos());
-			stConsulta.setInt(5, objeto.getIngressoComprado());
-			stConsulta.setString(6, objeto.getCategoria());
-			stConsulta.setInt(7, objeto.getCodigoEndereco().getIdEndereco());
-			stConsulta.setInt(8, objeto.getIdEvento());
+//			stConsulta.setInt(5, objeto.getIngressoComprado());
+			stConsulta.setString(5, objeto.getCategoria());
+			stConsulta.setInt(6, objeto.getCodigoEndereco().getIdEndereco());
+			stConsulta.setInt(7, objeto.getIdEvento());
 			
 			int rowsAffected = stConsulta.executeUpdate();
 			
@@ -107,6 +109,7 @@ public class EventosDaoJDBC implements EventosDao{
 				
 			} else {
 				System.out.println("Houve um erro inesperado... nenhuma linha afetada!!");
+				statusUpdate = false;
 			}
 		}catch (SQLException e) {
 			throw new DbException(e.getMessage());
@@ -114,6 +117,8 @@ public class EventosDaoJDBC implements EventosDao{
 		} finally {
 			DbConexao.closeStatement(stConsulta);
 		}
+		
+		return statusUpdate;
 		
 	}
 	

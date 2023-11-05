@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,10 +25,14 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.http.client.ClientProtocolException;
+
 import controller.producao.CepUtils;
-import controller.producao.Eventos;
+import controller.service.ViacepService;
 import model.dao.DaoFactory;
+import model.dao.EnderecoDao;
 import model.dao.EventosDao;
+import model.entidades.TabEndereco;
 import model.entidades.TabEventos;
 
 public class JAtualizaEvento extends JFrame {
@@ -44,6 +49,8 @@ public class JAtualizaEvento extends JFrame {
 	private JTextField textFieldNumLocal;
 	private JTextField textFieldProcurar;
 	private JTable table;
+	
+	private TabEndereco enderecoEvento;
 
 	/**
 	 * Launch the application.
@@ -113,7 +120,7 @@ public class JAtualizaEvento extends JFrame {
 								
 								Object[] dados = {tabEvento.getIdEvento(), tabEvento.getNomeEvento(), tabEvento.getDataEvento(),
 										tabEvento.getHoraEvento(), tabEvento.getCodigoEndereco().getLogradouro() + ", " + tabEvento.getCodigoEndereco().getNumLocal(),
-										tabEvento.getCodigoEndereco().getLocalidade() + "/" + tabEvento.getCodigoEndereco().getUf() };
+										tabEvento.getCodigoEndereco().getBairro(), tabEvento.getCodigoEndereco().getLocalidade() + "/" + tabEvento.getCodigoEndereco().getUf() };
 								
 								dtmEvento.addRow(dados);
 							}
@@ -126,7 +133,7 @@ public class JAtualizaEvento extends JFrame {
 									
 									Object[] dados = {tabEvento.getIdEvento(), tabEvento.getNomeEvento(), tabEvento.getDataEvento(),
 											tabEvento.getHoraEvento(), tabEvento.getCodigoEndereco().getLogradouro() + ", " + tabEvento.getCodigoEndereco().getNumLocal(),
-											tabEvento.getCodigoEndereco().getLocalidade() + "/" + tabEvento.getCodigoEndereco().getUf() };
+											tabEvento.getCodigoEndereco().getBairro(), tabEvento.getCodigoEndereco().getLocalidade() + "/" + tabEvento.getCodigoEndereco().getUf() };
 									
 									dtmEvento.addRow(dados);
 								}
@@ -163,7 +170,7 @@ public class JAtualizaEvento extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"N\u00BA Evento", "Nome", "Data", "Hora", "Localidade", "Local/UF"
+				"N\u00BA Evento", "Nome", "Data", "Hora", "Localidade", "Bairro", "Local/UF"
 			}
 		));
 		table.getColumnModel().getColumn(0).setPreferredWidth(46);
@@ -260,71 +267,85 @@ public class JAtualizaEvento extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) { // procedimento para cadastrar novo evento
 				
-				if (!textFieldNomeEvento.getText().isEmpty() || !textFieldNomeEvento.getText().isBlank()
-						|| !textFieldData.getText().isEmpty() || !textFieldData.getText().isBlank()
-						|| !textFieldHora.getText().isEmpty() || !textFieldHora.getText().isBlank()
-						|| !textFieldQtdIngresso.getText().isEmpty() || !textFieldQtdIngresso.getText().isBlank()
-						|| !textFieldCategoria.getText().isEmpty() || !textFieldCategoria.getText().isBlank()
-						|| !textFieldLocal.getText().isEmpty() || !textFieldLocal.getText().isBlank()
-						|| !textFieldNumLocal.getText().isEmpty() || !textFieldNumLocal.getText().isBlank()
-						|| !textFieldCep.getText().isEmpty() || !textFieldCep.getText().isBlank()) {
+				
+				if (table.getSelectedRow() != -1) {
 					
-					TabEventos novoTabEvento = new TabEventos();
-					Date data = new Date();
-					SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-					String[] novoEndereco = new String[3];
-					Eventos criaNovoEvento = new Eventos();
-					
-					System.out.print("Nome Evento: ");
-					novoTabEvento.setNomeEvento(textFieldNomeEvento.getText());
-					
-					try {
-						System.out.print("Data Evento: ");
-						data = formatoData.parse(textFieldData.getText());
-						novoTabEvento.setDataEvento(data);
-					} catch (ParseException el) {
+					if (!textFieldNomeEvento.getText().isEmpty() || !textFieldNomeEvento.getText().isBlank()
+							|| !textFieldData.getText().isEmpty() || !textFieldData.getText().isBlank()
+							|| !textFieldHora.getText().isEmpty() || !textFieldHora.getText().isBlank()
+							|| !textFieldQtdIngresso.getText().isEmpty() || !textFieldQtdIngresso.getText().isBlank()
+							|| !textFieldCategoria.getText().isEmpty() || !textFieldCategoria.getText().isBlank()
+							|| !textFieldLocal.getText().isEmpty() || !textFieldLocal.getText().isBlank()
+							|| !textFieldNumLocal.getText().isEmpty() || !textFieldNumLocal.getText().isBlank()
+							|| !textFieldCep.getText().isEmpty() || !textFieldCep.getText().isBlank()) {
+						
+						TabEventos novoTabEvento = new TabEventos();
+						Date data = new Date();
+						SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+						String[] novoEndereco = new String[3];
+						
+//						Nome Evento
+						novoTabEvento.setNomeEvento(textFieldNomeEvento.getText());
+						
 						try {
-							data = formatoData.parse(textFieldData.getText().replace("-", "/"));
-						} catch (ParseException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+//							Data Evento
+							data = formatoData.parse(textFieldData.getText());
+							novoTabEvento.setDataEvento(data);
+						} catch (ParseException el) {
+							try {
+								data = formatoData.parse(textFieldData.getText().replace("-", "/"));
+							} catch (ParseException e1) {
+								e1.printStackTrace();
+							}
+							novoTabEvento.setDataEvento(data);
 						}
-						novoTabEvento.setDataEvento(data);
-//						e.printStackTrace();
+						
+						
+//						Hora Evento
+						novoTabEvento.setHoraEvento(textFieldHora.getText());
+						
+//						Qtd Ingressos
+						novoTabEvento.setIngressos(Integer.parseInt(textFieldQtdIngresso.getText()));
+						
+//						Categoria
+						novoTabEvento.setCategoria(textFieldCategoria.getText());
+						
+//						---------------- Captura Endereco ---------------
+						
+//						Local
+						novoEndereco[0] =  textFieldLocal.getText();
+						
+//						Numero Local
+						novoEndereco[1] = textFieldNumLocal.getText();
+
+//						CEP
+						novoEndereco[2] = textFieldCep.getText();
+						novoEndereco[2] = CepUtils.removeMascaraCep(novoEndereco[2]); // Remove o travessão que divide os três últimos digitos do CEP
+						CepUtils.validaCep(novoEndereco[2]); // Verifica se está dentro do formato e com 8 digitos
+						confereEndereco(novoEndereco); // testa se o endereco existe no banco e cadastra se necessário
+						
+						novoTabEvento.setIdEvento((Integer) table.getModel().getValueAt(table.getSelectedRow(), 0));
+						novoTabEvento.setCodigoEndereco(enderecoEvento);
+						
+						boolean statusAtualizacao = updateAtualizaEvento(novoTabEvento);
+						
+						if (statusAtualizacao == true) {
+							JOptionPane.showMessageDialog(btnCadastrar, "EVENTO ATUALIZADO!", "ATUALIZADO!", JOptionPane.WARNING_MESSAGE);
+							dispose();
+							
+						} else {
+							JOptionPane.showMessageDialog(btnCadastrar, "Houve um erro inesperado... nenhuma linha Atualizada!!", "ATUALIZADO!", JOptionPane.WARNING_MESSAGE);
+						}
+					
+					} else {
+						JOptionPane.showMessageDialog(btnCadastrar, "OS CAMPOS NÃO PODEM ESTAR VAZIO", "Aviso!", JOptionPane.WARNING_MESSAGE);
 					}
 					
-					
-					System.out.print("Hora Evento: ");
-					novoTabEvento.setHoraEvento(textFieldHora.getText());
-					
-					System.out.print("Qtd Ingressos: ");
-					novoTabEvento.setIngressos(Integer.parseInt(textFieldQtdIngresso.getText()));
-					
-					System.out.print("Categoria: ");
-					novoTabEvento.setCategoria(textFieldCategoria.getText());
-					
-//					---------------- Captura Endereco ---------------
-					
-					System.out.print("Local: ");
-					novoEndereco[0] =  textFieldLocal.getText();
-					
-					System.out.print("numeroLocal: ");
-					novoEndereco[1] = textFieldNumLocal.getText();
-
-					System.out.print("CEP: ");
-					novoEndereco[2] = textFieldCep.getText();
-					novoEndereco[2] = CepUtils.removeMascaraCep(novoEndereco[2]); // Remove o travessão que divide os três últimos digitos do CEP
-					CepUtils.validaCep(novoEndereco[2]); // Verifica se está dentro do formato e com 8 digitos
-					
-					criaNovoEvento.criarEvento(novoTabEvento, novoEndereco);
-					
-					JOptionPane.showMessageDialog(btnCadastrar, "EVENTO CADASTRADO!", "Aviso!", JOptionPane.WARNING_MESSAGE);
-					dispose();
-					
-					
 				} else {
-					JOptionPane.showMessageDialog(btnCadastrar, "OS CAMPOS NÃO PODEM ESTAR VAZIO", "Aviso!", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(btnCadastrar, "Nenhuma Linha Selecionada!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 				}
+					
+
 				
 			}
 		});
@@ -340,4 +361,59 @@ public class JAtualizaEvento extends JFrame {
 		btnVoltar.setBounds(612, 25, 117, 25);
 		panelBotoes.add(btnVoltar);
 	}
+	
+	
+	private void confereEndereco(String[] novoEndereco) {
+		
+		EnderecoDao novoEnderecoDao = DaoFactory.createEndereco();
+		TabEndereco findEndereco = novoEnderecoDao.findByCep(novoEndereco[2]); // 'novoEndereco[2]' contém a String com o Cep
+		
+		
+		if (findEndereco != null) {
+			System.out.println("Diferente de NULL");
+			this.enderecoEvento = findEndereco;
+			System.out.println("Existe Endereco: " + this.enderecoEvento);
+			
+		} else {
+			System.out.println("Igual a NULL");
+			
+			try {
+				ViacepService findCep = new ViacepService();
+	
+				this.enderecoEvento = findCep.getEndereco(novoEndereco[2]);
+				this.enderecoEvento.setNomeLocal(novoEndereco[0]);
+				this.enderecoEvento.setNumLocal(novoEndereco[1]);
+	
+				novoEnderecoDao.insert(this.enderecoEvento);
+			
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			
+			} catch (IOException e) {
+				e.printStackTrace();
+			
+			}
+		}
+			
+	}
+	
+	
+	private boolean updateAtualizaEvento(TabEventos tabEvento) {
+		
+		EventosDao eventoDao = DaoFactory.createEventos();
+		TabEventos updateTabEvento = new TabEventos();
+		
+		updateTabEvento.setNomeEvento(tabEvento.getNomeEvento());
+		updateTabEvento.setDataEvento(tabEvento.getDataEvento());
+		updateTabEvento.setHoraEvento(tabEvento.getHoraEvento());
+		updateTabEvento.setIngressos(tabEvento.getIngressos());
+		updateTabEvento.setCategoria(tabEvento.getCategoria());
+		updateTabEvento.setCodigoEndereco(tabEvento.getCodigoEndereco());
+		updateTabEvento.setIdEvento(tabEvento.getIdEvento());
+		
+		return eventoDao.update(updateTabEvento);
+	}
+	
+	
+	
 }

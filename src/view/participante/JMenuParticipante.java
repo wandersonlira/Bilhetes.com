@@ -96,7 +96,7 @@ public class JMenuParticipante extends JFrame {
 		mntmRevomerIngresso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				JPesquisaIngressoID jPesquisaIngressoID = new JPesquisaIngressoID();
+				JRemoveIngresso jPesquisaIngressoID = new JRemoveIngresso();
 				jPesquisaIngressoID.setLocationRelativeTo(mntmRevomerIngresso);
 				jPesquisaIngressoID.setVisible(true);
 				

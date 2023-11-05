@@ -11,8 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import view.participante.JOpcaoParticipante;
-import view.produtor.JOpcaoProdutor;
+import view.participante.JMenuParticipante;
+import view.produtor.JMenuProdutor;
 
 public class JTelaInicial extends JFrame {
 
@@ -68,9 +68,9 @@ public class JTelaInicial extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				JOpcaoProdutor  jOpcaoProdutor = new JOpcaoProdutor();
-				jOpcaoProdutor.setLocationRelativeTo(lblBemvindoBilhetecom);
-				jOpcaoProdutor.setVisible(true);
+				JMenuProdutor  jMenuProdutor = new JMenuProdutor();
+				jMenuProdutor.setLocationRelativeTo(btnProdutor);
+				jMenuProdutor.setVisible(true);
 				
 			}
 		});
@@ -82,9 +82,9 @@ public class JTelaInicial extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				JOpcaoParticipante jOpcaoParticipante = new JOpcaoParticipante();
-				jOpcaoParticipante.setLocationRelativeTo(btnParticipante);
-				jOpcaoParticipante.setVisible(true);
+				JMenuParticipante jMenuParticipante = new JMenuParticipante();
+				jMenuParticipante.setLocationRelativeTo(btnParticipante);
+				jMenuParticipante.setVisible(true);
 				
 			}
 		});

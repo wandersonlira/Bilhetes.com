@@ -183,43 +183,42 @@ public class JCadastroEvento extends JFrame {
 					String[] novoEndereco = new String[3];
 					Eventos criaNovoEvento = new Eventos();
 					
-					System.out.print("Nome Evento: ");
+//					Nome Evento
 					novoTabEvento.setNomeEvento(textFieldNomeEvento.getText());
 					
 					try {
-						System.out.print("Data Evento: ");
+//						Data EVento
 						data = formatoData.parse(textFieldData.getText());
 						novoTabEvento.setDataEvento(data);
 					} catch (ParseException el) {
 						try {
 							data = formatoData.parse(textFieldData.getText().replace("-", "/"));
 						} catch (ParseException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 						novoTabEvento.setDataEvento(data);
-//						e.printStackTrace();
+						
 					}
 					
 					
-					System.out.print("Hora Evento: ");
+//					Hora Evento
 					novoTabEvento.setHoraEvento(textFieldHora.getText());
 					
-					System.out.print("Qtd Ingressos: ");
+//					Qtd Ingressos
 					novoTabEvento.setIngressos(Integer.parseInt(textFieldQtdIngresso.getText()));
 					
-					System.out.print("Categoria: ");
+//					Categoria
 					novoTabEvento.setCategoria(textFieldCategoria.getText());
 					
 //					---------------- Captura Endereco ---------------
 					
-					System.out.print("Local: ");
+//					Local
 					novoEndereco[0] =  textFieldLocal.getText();
 					
-					System.out.print("numeroLocal: ");
+//					Numero Local
 					novoEndereco[1] = textFieldNumLocal.getText();
 
-					System.out.print("CEP: ");
+//					CEP
 					novoEndereco[2] = textFieldCep.getText();
 					novoEndereco[2] = CepUtils.removeMascaraCep(novoEndereco[2]); // Remove o travessão que divide os três últimos digitos do CEP
 					CepUtils.validaCep(novoEndereco[2]); // Verifica se está dentro do formato e com 8 digitos
