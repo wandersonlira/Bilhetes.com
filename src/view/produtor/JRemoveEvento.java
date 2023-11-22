@@ -21,6 +21,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import controller.exception.DbException;
 import model.dao.DaoFactory;
 import model.dao.EventosDao;
 import model.entidades.TabEventos;
@@ -174,23 +175,33 @@ public class JRemoveEvento extends JFrame {
 				
 				if (table.getSelectedRow() != -1) {
 					
-					EventosDao eventoDao = DaoFactory.createEventos();
-					DefaultTableModel dtmRemoveEvento = (DefaultTableModel) table.getModel();
-					Integer linhaRemoveId = (Integer) dtmRemoveEvento.getValueAt(table.getSelectedRow(), 0);
-					
-					eventoDao.deleteById(linhaRemoveId);
-					
-					JOptionPane.showMessageDialog(btnRemover, 
-							"\nNº Evento: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 0)
-							+ "\nEvento: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 1)
-							+ "\nData: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 2)
-							+ "\nHora: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 3)
-							+ "\nRua: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 4)
-							+ "\nBairro: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 5)
-							+ "\nCidade: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 6), 
-							"REMOVIDO!", JOptionPane.WARNING_MESSAGE);
-							dispose();
+					if (JOptionPane.showConfirmDialog(btnRemover, "Deseja Remover Evento? ", "Remover", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						
+						EventosDao eventoDao = DaoFactory.createEventos();
+						DefaultTableModel dtmRemoveEvento = (DefaultTableModel) table.getModel();
+						Integer linhaRemoveId = (Integer) dtmRemoveEvento.getValueAt(table.getSelectedRow(), 0);
+						
+						try{
+							eventoDao.deleteById(linhaRemoveId);
+							
+							JOptionPane.showMessageDialog(btnRemover, 
+									"\nNº Evento: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 0)
+									+ "\nEvento: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 1)
+									+ "\nData: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 2)
+									+ "\nHora: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 3)
+									+ "\nRua: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 4)
+									+ "\nBairro: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 5)
+									+ "\nCidade: " + dtmRemoveEvento.getValueAt(table.getSelectedRow(), 6), 
+									"REMOVIDO!", JOptionPane.WARNING_MESSAGE);
+									dispose();
+							
+						} catch (DbException exceptionErroRemove) {
+							JOptionPane.showMessageDialog(btnRemover, "NÂO foi possível REMOVER o Evento! \n\nMOTIVO: possui participantes cadastrados.", 
+									"ATENÇÂO", JOptionPane.WARNING_MESSAGE);
+									dispose();
+						}
+					}
+					
 				} else {
 					JOptionPane.showMessageDialog(btnRemover, "Nenhuma Linha Selecionada!", "Aviso!", JOptionPane.WARNING_MESSAGE);
 				}

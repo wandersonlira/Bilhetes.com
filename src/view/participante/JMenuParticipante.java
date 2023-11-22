@@ -4,12 +4,16 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import view.JTelaInicial;
+import java.awt.Font;
 
 public class JMenuParticipante extends JFrame {
 
@@ -129,6 +133,26 @@ public class JMenuParticipante extends JFrame {
 		
 		JMenuItem mntmSaibaMais = new JMenuItem("Saiba Mais");
 		mnSobre.add(mntmSaibaMais);
+		
+		
+		
+		JPanel panelBtnMenuPrincipal = new JPanel();
+		panelBtnMenuPrincipal.setBounds(212, 56, 460, 245);
+		contentPane.add(panelBtnMenuPrincipal);
+		panelBtnMenuPrincipal.setLayout(null);
+		
+		JButton btnMenuInicial = new JButton("Menu Inicial");
+		btnMenuInicial.setFont(new Font("Dialog", Font.BOLD, 18));
+		btnMenuInicial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTelaInicial jTelaInicial = new JTelaInicial();
+				jTelaInicial.setLocationRelativeTo(btnMenuInicial);
+				jTelaInicial.setVisible(true);
+				dispose();
+			}
+		});
+		btnMenuInicial.setBounds(156, 92, 167, 41);
+		panelBtnMenuPrincipal.add(btnMenuInicial);
 		
 		
 	}

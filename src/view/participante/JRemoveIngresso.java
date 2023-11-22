@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.producao.Ingressos;
+import controller.producao.LeitorTeclado;
 import model.dao.DaoFactory;
 import model.dao.ParticipanteEventoDao;
 
@@ -90,7 +91,7 @@ public class JRemoveIngresso extends JFrame {
 		btnPesquisar.setBounds(25, 24, 117, 25);
 		panelPesquisa.add(btnPesquisar);
 		
-		JLabel lblIdPartEvento = new JLabel("Nº Ingresso");
+		JLabel lblIdPartEvento = new JLabel("Nº CPF");
 		lblIdPartEvento.setForeground(new Color(154, 153, 150));
 		lblIdPartEvento.setBounds(160, 26, 77, 20);
 		panelPesquisa.add(lblIdPartEvento);
@@ -133,21 +134,26 @@ public class JRemoveIngresso extends JFrame {
 				
 				if (table.getSelectedRow() != -1) {
 					
-					DefaultTableModel dtmEventos = (DefaultTableModel) table.getModel(); // Instanciado para referenciar a linha e coluna que será clicada
-					
-					Integer linhaIdEvento = (Integer) dtmEventos.getValueAt(table.getSelectedRow(), 0); // pega coluna 0 na linha clicada e transforma e Integer
+					if (JOptionPane.showConfirmDialog(btnRemover, 
+							"Deseja Removar o Ingresso? ", "REMOVER INGRESSO", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						
-						ParticipanteEventoDao participanteEventoDao = DaoFactory.createParticipanteEvento();
-						participanteEventoDao.deleteById(linhaIdEvento);
+						DefaultTableModel dtmEventos = (DefaultTableModel) table.getModel(); // Instanciado para referenciar a linha e coluna que será clicada
 						
-						JOptionPane.showMessageDialog(btnRemover, 
-						"\nNº Ingresso: " + dtmEventos.getValueAt(table.getSelectedRow(), 0)
-						+ "\nEvento: " + dtmEventos.getValueAt(table.getSelectedRow(), 4)
-						+ "\nRua: " + dtmEventos.getValueAt(table.getSelectedRow(), 5) + ", " + dtmEventos.getValueAt(table.getSelectedRow(), 6)
-						+ "\nBairro: " + dtmEventos.getValueAt(table.getSelectedRow(), 7)
-						+ "\nCIdade: " + dtmEventos.getValueAt(table.getSelectedRow(), 8), 
-						"EXCLUÍDO!", JOptionPane.WARNING_MESSAGE);
-						dispose();
+						Integer linhaIdEvento = (Integer) dtmEventos.getValueAt(table.getSelectedRow(), 0); // pega coluna 0 na linha clicada e transforma e Integer
+							
+							ParticipanteEventoDao participanteEventoDao = DaoFactory.createParticipanteEvento();
+							participanteEventoDao.deleteById(linhaIdEvento);
+							
+							JOptionPane.showMessageDialog(btnRemover, 
+							"\nNº Ingresso: " + dtmEventos.getValueAt(table.getSelectedRow(), 0)
+							+ "\nEvento: " + dtmEventos.getValueAt(table.getSelectedRow(), 4)
+							+ "\nRua: " + dtmEventos.getValueAt(table.getSelectedRow(), 5) + ", " + dtmEventos.getValueAt(table.getSelectedRow(), 6)
+							+ "\nBairro: " + dtmEventos.getValueAt(table.getSelectedRow(), 7)
+							+ "\nCIdade: " + dtmEventos.getValueAt(table.getSelectedRow(), 8), 
+							"EXCLUÍDO!", JOptionPane.WARNING_MESSAGE);
+							dispose();
+						
+					}
 						
 				} else {
 					JOptionPane.showMessageDialog(btnRemover, "Nenhuma Linha Selecionada!", "Aviso!", JOptionPane.WARNING_MESSAGE);

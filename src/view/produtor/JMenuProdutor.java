@@ -11,6 +11,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import view.JTelaInicial;
+
+import javax.swing.JButton;
+import java.awt.Font;
+
 public class JMenuProdutor extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -116,7 +121,24 @@ public class JMenuProdutor extends JFrame {
 		JMenuItem mntmSaibaMais = new JMenuItem("Saiba Mais");
 		mnSobre.add(mntmSaibaMais);
 		
+		JPanel panelBotao = new JPanel();
+		panelBotao.setBounds(153, 117, 441, 118);
+		contentPane.add(panelBotao);
+		panelBotao.setLayout(null);
+		
+		JButton btnMenuInicial = new JButton("Menu Inicial");
+		btnMenuInicial.setFont(new Font("Dialog", Font.BOLD, 18));
+		btnMenuInicial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTelaInicial jTelaInicial = new JTelaInicial();
+				jTelaInicial.setLocationRelativeTo(btnMenuInicial);
+				jTelaInicial.setVisible(true);
+				dispose();
+			}
+		});
+		btnMenuInicial.setBounds(136, 39, 171, 41);
+		panelBotao.add(btnMenuInicial);
+		
 		
 	}	
-	
 }
