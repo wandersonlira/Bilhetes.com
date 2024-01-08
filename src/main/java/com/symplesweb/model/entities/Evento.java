@@ -3,12 +3,19 @@ package com.symplesweb.model.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,14 +33,26 @@ public class Evento implements Serializable{
 	private Integer ingressos;
 	private Integer ingressoComprado;
 //	private String categoria; // Mudar para Enum 
-//	private TabEndereco codigoEndereco; CRIAR UMA 'SET' DE ENDERECO
+	
+	@ManyToOne
+	@JoinColumn(name = "codigo_id_endereco", nullable = true)
+	private Endereco endereco;
+	
+//	@OneToMany(mappedBy = "codigo_idEvento")
+//	private Set<ParticipanteEvento> eventoParticipantes = new HashSet<>();
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "tab_eventos_participantes",
+			joinColumns = @JoinColumn(name = "codigo_id_evento"),
+			inverseJoinColumns = @JoinColumn(name = "codigo_id_participante"))
+	private Set<Participante> participantes = new HashSet<>();
 	
 	
 	
+	@Deprecated
 	public Evento() {}
 	
 	public Evento(Long idEvento, String nomeEvento, LocalDate dataEvento, LocalDateTime horaEvento, Integer ingressos,
-			Integer ingressoComprado) {
+			Integer ingressoComprado, Endereco endereco) {
 		super();
 		this.idEvento = idEvento;
 		this.nomeEvento = nomeEvento;
@@ -41,6 +60,7 @@ public class Evento implements Serializable{
 		this.horaEvento = horaEvento;
 		this.ingressos = ingressos;
 		this.ingressoComprado = ingressoComprado;
+		this.endereco = endereco;
 	}
 	
 	
@@ -92,6 +112,25 @@ public class Evento implements Serializable{
 	public void setIngressoComprado(Integer ingressoComprado) {
 		this.ingressoComprado = ingressoComprado;
 	}
+	
+//	-----------
+	
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public Set<Participante> getParticipantes() {
+		return participantes;
+	}
+
+	public void setParticipantes(Set<Participante> participantes) {
+		this.participantes = participantes;
+	}
+	
 	
 	
 

@@ -1,12 +1,16 @@
 package com.symplesweb.model.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 
@@ -23,8 +27,13 @@ public class Participante implements Serializable{
 	private String cpf;
 	private String email;
 	
+//	@OneToMany(mappedBy = "codigo_idParticipante")
+//	private List<ParticipanteEvento> participanteEventos = new ArrayList<>();
+	@ManyToMany(mappedBy = "participantes", fetch = FetchType.LAZY	)
+	private List<Evento> eventos = new ArrayList<Evento>();
 	
 	
+	@Deprecated
 	public Participante() {}
 	
 	public Participante(Long idParticipante, String nomeParticipante, String cpf, String email) {
@@ -39,10 +48,6 @@ public class Participante implements Serializable{
 
 	public Long getIdParticipante() {
 		return idParticipante;
-	}
-
-	public void setIdParticipante(Long idParticipante) {
-		this.idParticipante = idParticipante;
 	}
 
 	public String getNomeParticipante() {
@@ -67,6 +72,14 @@ public class Participante implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public List<Evento> getEventos() {
+		return eventos;
+	}
+
+	public void setEventos(List<Evento> eventos) {
+		this.eventos = eventos;
 	}
 	
 	

@@ -1,14 +1,16 @@
 package com.symplesweb.model.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
 
 @Entity
 @Table(name = "tab_enderecos")
@@ -29,16 +31,18 @@ public class Endereco implements Serializable{
 	  
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idEndereco;
+	private Long idEndereco;
 	private String nomeLocal;
 	private String numLocal;
+	@OneToMany(mappedBy = "endereco")
+	private List<Evento> eventos = new ArrayList<>();
 	  
 	  
 	  
 	public Endereco() {}
 	  
 	public Endereco(String cep, String logradouro, String complemento, String bairro, String localidade, String uf,
-			String ibge, String gia, String ddd, String siafi, Integer idEndereco, String nomeLocal, String numLocal) {
+			String ibge, String gia, String ddd, String siafi, Long idEndereco, String nomeLocal, String numLocal) {
 		super();
 		this.cep = cep;
 		this.logradouro = logradouro;
@@ -135,11 +139,11 @@ public class Endereco implements Serializable{
 		this.siafi = siafi;
 	}
 
-	public Integer getIdEndereco() {
+	public Long getIdEndereco() {
 		return idEndereco;
 	}
 
-	public void setIdEndereco(Integer idEndereco) {
+	public void setIdEndereco(Long idEndereco) {
 		this.idEndereco = idEndereco;
 	}
 
@@ -157,6 +161,14 @@ public class Endereco implements Serializable{
 
 	public void setNumLocal(String numLocal) {
 		this.numLocal = numLocal;
+	}
+	
+	public List<Evento> getEventos() {
+		return eventos;
+	}
+
+	public void setEventos(List<Evento> eventos) {
+		this.eventos = eventos;
 	}
 	
 	
