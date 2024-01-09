@@ -13,7 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -38,14 +37,18 @@ public class Evento implements Serializable{
 	@JoinColumn(name = "codigo_id_endereco", nullable = true)
 	private Endereco endereco;
 	
+//	----- solução 1 -------
 //	@OneToMany(mappedBy = "codigo_idEvento")
 //	private Set<ParticipanteEvento> eventoParticipantes = new HashSet<>();
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "tab_eventos_participantes",
-			joinColumns = @JoinColumn(name = "codigo_id_evento"),
-			inverseJoinColumns = @JoinColumn(name = "codigo_id_participante"))
+//	----- solução 2 -------
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(name = "tab_eventos_participantes",
+//			joinColumns = @JoinColumn(name = "codigo_id_evento"),
+//			inverseJoinColumns = @JoinColumn(name = "codigo_id_participante"))
+//	private Set<Participante> participantes = new HashSet<>();
+//	----- solução 3 -------
+	@ManyToMany(mappedBy = "eventos", fetch = FetchType.EAGER)
 	private Set<Participante> participantes = new HashSet<>();
-	
 	
 	
 	@Deprecated

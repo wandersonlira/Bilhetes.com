@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,7 +37,8 @@ public class Endereco implements Serializable{
 	private Long idEndereco;
 	private String nomeLocal;
 	private String numLocal;
-	@OneToMany(mappedBy = "endereco")
+	@JsonIgnore
+	@OneToMany(mappedBy = "endereco", fetch = FetchType.LAZY)
 	private List<Evento> eventos = new ArrayList<>();
 	  
 	  

@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
@@ -26,10 +30,18 @@ public class Participante implements Serializable{
 	private String nomeParticipante;
 	private String cpf;
 	private String email;
-	
+//	----- solução 1 -------
 //	@OneToMany(mappedBy = "codigo_idParticipante")
 //	private List<ParticipanteEvento> participanteEventos = new ArrayList<>();
-	@ManyToMany(mappedBy = "participantes", fetch = FetchType.LAZY	)
+//	------ solução 2 -----
+//	@ManyToMany(mappedBy = "participantes", fetch = FetchType.LAZY	)
+//	private List<Evento> eventos = new ArrayList<Evento>();
+//	------ solução 3 -----
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "tab_participantes_eventos", 
+			joinColumns = @JoinColumn(name = "codigo_id_participante"),
+			inverseJoinColumns = @JoinColumn(name = "codigo_id_evento"))
 	private List<Evento> eventos = new ArrayList<Evento>();
 	
 	
