@@ -37,7 +37,7 @@ public class Endereco implements Serializable{
 	private Long idEndereco;
 	private String nomeLocal;
 	private String numLocal;
-	@JsonIgnore
+
 	@OneToMany(mappedBy = "endereco", fetch = FetchType.LAZY)
 	private List<Evento> eventos = new ArrayList<>();
 	  
@@ -167,12 +167,9 @@ public class Endereco implements Serializable{
 		this.numLocal = numLocal;
 	}
 	
+	@JsonIgnore
 	public List<Evento> getEventos() {
 		return eventos;
-	}
-
-	public void setEventos(List<Evento> eventos) {
-		this.eventos = eventos;
 	}
 	
 	

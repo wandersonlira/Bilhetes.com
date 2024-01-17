@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.symplesweb.controller.DTO.EventoDTO;
 import com.symplesweb.controller.services.EventoService;
 import com.symplesweb.model.entities.Evento;
 
@@ -33,5 +34,21 @@ public class EventoResource {
 		Evento objEventos = service.findById(id);
 		return ResponseEntity.ok().body(objEventos);
 	}
+	
+	
+	@GetMapping(value = "/enderecos/{logradouro}")
+	public ResponseEntity<List<EventoDTO>> procuraPorLogradouro(@PathVariable String logradouro) {
+		List<EventoDTO> objEventos = service.procuraPorLogradouro(logradouro);
+		return ResponseEntity.ok().body(objEventos);
+	}
+	
+	
+	@GetMapping(value = "/search/{nomeEvento}")
+	public ResponseEntity<List<EventoDTO>> searchByNomeEvento(@PathVariable String nomeEvento) {
+		List<EventoDTO> objetoEvento = service.searchByNomeEvento(nomeEvento);
+		return ResponseEntity.ok().body(objetoEvento);
+	}
+	
+	
 
 }

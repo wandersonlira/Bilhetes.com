@@ -17,7 +17,8 @@ import com.symplesweb.model.entities.Participante;
 public class ParticipanteResource {
 	
 	@Autowired
-	ParticipanteService service;
+	private ParticipanteService service;
+	
 	
 	
 	@GetMapping

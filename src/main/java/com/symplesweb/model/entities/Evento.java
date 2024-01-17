@@ -8,13 +8,12 @@ import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,23 +33,13 @@ public class Evento implements Serializable{
 //	private String categoria; // Mudar para Enum 
 	
 	@ManyToOne
-	@JoinColumn(name = "codigo_id_endereco", nullable = true)
+	@JoinColumn(name = "chave_id_endereco", nullable = true)
 	private Endereco endereco;
-	
-//	----- solução 1 -------
-//	@OneToMany(mappedBy = "codigo_idEvento")
-//	private Set<ParticipanteEvento> eventoParticipantes = new HashSet<>();
-//	----- solução 2 -------
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	@JoinTable(name = "tab_eventos_participantes",
-//			joinColumns = @JoinColumn(name = "codigo_id_evento"),
-//			inverseJoinColumns = @JoinColumn(name = "codigo_id_participante"))
-//	private Set<Participante> participantes = new HashSet<>();
-//	----- solução 3 -------
-	@ManyToMany(mappedBy = "eventos", fetch = FetchType.EAGER)
-	private Set<Participante> participantes = new HashSet<>();
-	
-	
+	@OneToMany(mappedBy = "evento")
+	private Set<ParticipanteEvento> participanteEvento = new HashSet<>();
+
+
+
 	@Deprecated
 	public Evento() {}
 	
@@ -116,22 +105,24 @@ public class Evento implements Serializable{
 		this.ingressoComprado = ingressoComprado;
 	}
 	
-//	-----------
+//	----------- Get and Set Association -----------
 	
 	public Endereco getEndereco() {
 		return endereco;
 	}
-
+	
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
 
-	public Set<Participante> getParticipantes() {
-		return participantes;
-	}
 
-	public void setParticipantes(Set<Participante> participantes) {
-		this.participantes = participantes;
+	public Set<Participante> getParticipante() {
+		Set<Participante> setParticipante = new HashSet<Participante>();
+		for (ParticipanteEvento participanteEvento : participanteEvento) {
+			setParticipante.add(participanteEvento.getParticipante());
+		}
+		
+		return setParticipante;
 	}
 	
 	
@@ -162,9 +153,5 @@ public class Evento implements Serializable{
 				+ ", horaEvento=" + horaEvento + ", ingressos=" + ingressos + ", ingressoComprado=" + ingressoComprado
 				+ "]";
 	}
-	
-	
-	
-	
 
 }
