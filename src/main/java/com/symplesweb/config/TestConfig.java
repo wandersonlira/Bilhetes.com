@@ -5,12 +5,16 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.symplesweb.controller.DTO.EventoDTO;
+import com.symplesweb.controller.DTO.ParticipanteDto;
 import com.symplesweb.controller.repositories.EnderecoRepository;
 import com.symplesweb.controller.repositories.EventoRepository;
 import com.symplesweb.controller.repositories.ParticipanteEventoRepository;
@@ -88,18 +92,49 @@ public class TestConfig implements CommandLineRunner{
 		
 		System.out.println("\nPronto!!\n\n");
 		
-//		Optional<List<ParticipanteEvento>> list = participanteEventoRepository.buscaReservaPorCPF("00000000004");
+//		Optional<List<ParticipanteEvento>> list = participanteEventoRepository.findReservaByCPF("00000000004");
 //		
 //		for (ParticipanteEvento obj : list.get()) {
 //			System.out.println(obj.getParticipante());
+		
+//		}
+		
+//		--------------------------------------
+		
+//		Optional<List<Evento>> list = eventoRepository.searchByNomeEvento("MIMO");
+//		
+//		
+//		for (Evento evento : list.get()) {
+//			System.out.println(evento.toString());
 //		}
 //		
-//		List<EventoDTO> result = list.stream().map(x -> new EventoDTO(x)).collect(Collectors.toList());
+//		List<EventoDTO> result = list.get().stream().map(evento -> new EventoDTO(evento)).collect(Collectors.toList());
 //		
 //		for (EventoDTO obj : result) {
-//			System.out.println(obj);
+//			System.out.println(obj.toString());
 //		}	
 		
+//		-----------------------------------------------------------
+		
+//		List<Participante> participante = participanteRepository.findAll();
+//		List<ParticipanteDto> participanteDto = participante.stream().map(x -> new ParticipanteDto(x))
+//				.collect(Collectors.toList());
+//		
+//		for (ParticipanteDto objParticipante : participanteDto) {
+//			System.out.println(objParticipante.toString());
+//		}
+//		
+		
+//		--------------------------------------------------------------
+		
+//		Optional<Evento> list = eventoRepository.findById(1L);
+//		EventoDTO eventoDto = new EventoDTO(list.get());		
+//		System.out.println(eventoDto.toString());
+//		
+//		for (EventoDTO eventoDto : result) {
+//			System.out.println(eventoDto.toString());
+//		}
+
 		
 
 		

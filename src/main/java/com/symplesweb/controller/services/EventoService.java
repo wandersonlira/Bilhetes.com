@@ -21,14 +21,15 @@ public class EventoService {
 	
 	
 	
-	public List<Evento> findAll() {
-		return repository.findAll();
+	public List<EventoDTO> findAll() {
+		List<Evento> listEventos = repository.findAll();
+		return listEventos.stream().map(x -> new EventoDTO(x)).collect(Collectors.toList());
 	}
 	
 	
-	public Evento findById(Long id) {
+	public EventoDTO findById(Long id) {
 		Optional<Evento> objEvento = repository.findById(id);
-		return objEvento.get();
+		return new EventoDTO(objEvento.get());
 	}
 	
 	

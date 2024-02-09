@@ -23,15 +23,15 @@ public class EventoResource {
 	
 	
 	@GetMapping
-	public ResponseEntity<List<Evento>> findAll() {
-		List<Evento> listEventos = service.findAll();
+	public ResponseEntity<List<EventoDTO>> findAll() {
+		List<EventoDTO> listEventos = service.findAll();
 		return ResponseEntity.ok().body(listEventos);
 	}
 	
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Evento> findById(@PathVariable Long id) {
-		Evento objEventos = service.findById(id);
+	public ResponseEntity<EventoDTO> findById(@PathVariable Long id) {
+		EventoDTO objEventos = service.findById(id);
 		return ResponseEntity.ok().body(objEventos);
 	}
 	
