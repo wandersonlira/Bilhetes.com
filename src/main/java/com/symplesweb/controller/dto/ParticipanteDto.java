@@ -1,4 +1,4 @@
-package com.symplesweb.controller.DTO;
+package com.symplesweb.controller.dto;
 
 import com.symplesweb.model.entities.Participante;
 
@@ -8,11 +8,16 @@ public class ParticipanteDto {
 	
 	private Long idParticipante;
 	private String nomeParticipante;
+	private String cpf;
 	private String email;
 	
 	
 	
 	
+
+
+
+
 	public ParticipanteDto() {}
 //	
 //	
@@ -29,6 +34,7 @@ public class ParticipanteDto {
 		
 		this.idParticipante = projection.getIdParticipante();
 		this.nomeParticipante = projection.getNomeParticipante();
+		this.cpf = projection.getCpf();
 		this.email = projection.getEmail();
 		
 	}
@@ -52,6 +58,10 @@ public class ParticipanteDto {
 	public void setNomeParticipante(String nomeParticipante) {
 		this.nomeParticipante = nomeParticipante;
 	}
+	
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
 
 
 	public String getEmail() {
@@ -66,8 +76,8 @@ public class ParticipanteDto {
 
 	@Override
 	public String toString() {
-		return "ParticipanteDto [idParticipante=" + idParticipante + ", nomeParticipante=" + nomeParticipante
-				+ ", email=" + email + "]";
+		return "ParticipanteDto [idParticipante=" + idParticipante + ", nomeParticipante=" + nomeParticipante + 
+				", cpf=" + cpf + ", email=" + email + "]";
 	}
 	
 	

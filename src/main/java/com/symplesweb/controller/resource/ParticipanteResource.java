@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.symplesweb.controller.dto.view.ParticipanteDtoView;
 import com.symplesweb.controller.services.ParticipanteService;
 import com.symplesweb.model.entities.Participante;
 
@@ -22,14 +23,14 @@ public class ParticipanteResource {
 	
 	
 	@GetMapping
-	public ResponseEntity<List<Participante>> findAll() {
-		List<Participante> listParticipante = service.findAll();
+	public ResponseEntity<List<ParticipanteDtoView>> findAll() {
+		List<ParticipanteDtoView> listParticipante = service.findAll();
 		return ResponseEntity.ok().body(listParticipante);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Participante> findById(@PathVariable Long id) {
-		Participante objParticipante = service.findById(id);
+	public ResponseEntity<ParticipanteDtoView> findById(@PathVariable Long id) {
+		ParticipanteDtoView objParticipante = service.findById(id);
 		return ResponseEntity.ok().body(objParticipante);
 				
 	}

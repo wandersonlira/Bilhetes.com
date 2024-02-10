@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.symplesweb.controller.dto.view.EnderecoDTOView;
 import com.symplesweb.controller.services.EnderecoService;
 import com.symplesweb.model.entities.Endereco;
 
@@ -21,16 +22,23 @@ public class EnderecoResource {
 	
 	
 	@GetMapping
-	public ResponseEntity<List<Endereco>> findAll() {
-		List<Endereco> listEnderecos = service.findAll();
+	public ResponseEntity<List<EnderecoDTOView>> findAll() {
+		List<EnderecoDTOView> listEnderecos = service.findAll();
 		return ResponseEntity.ok().body(listEnderecos);
 	}
 	
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Endereco> findById(@PathVariable Long id) {
-		Endereco objEndereco = service.findById(id);
+	public ResponseEntity<EnderecoDTOView> findById(@PathVariable Long id) {
+		EnderecoDTOView objEndereco = service.findById(id);
 		return ResponseEntity.ok().body(objEndereco);
+	}
+	
+	
+	@GetMapping(value = "/logradouro/{logradouro}")
+	public ResponseEntity<List<EnderecoDTOView>> findByLogradouro(@PathVariable String logradouro) {
+		List<EnderecoDTOView> listEnderecos = service.findByLogradouro(logradouro);
+		return ResponseEntity.ok().body(listEnderecos);
 	}
 
 }

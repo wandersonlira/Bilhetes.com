@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.symplesweb.controller.DTO.EventoDTO;
+import com.symplesweb.controller.dto.view.EventoDTOView;
 import com.symplesweb.controller.repositories.EventoRepository;
 import com.symplesweb.model.entities.Evento;
 
@@ -21,29 +21,28 @@ public class EventoService {
 	
 	
 	
-	public List<EventoDTO> findAll() {
-		List<Evento> listEventos = repository.findAll();
-		return listEventos.stream().map(x -> new EventoDTO(x)).collect(Collectors.toList());
+	public List<EventoDTOView> findAll() {
+		return repository.findAll().stream().map(x -> new EventoDTOView(x)).collect(Collectors.toList());
 	}
 	
 	
-	public EventoDTO findById(Long id) {
+	public EventoDTOView findById(Long id) {
 		Optional<Evento> objEvento = repository.findById(id);
-		return new EventoDTO(objEvento.get());
+		return new EventoDTOView(objEvento.get());
 	}
 	
 	
-	public List<EventoDTO> procuraPorLogradouro(String logradouro) {
+	public List<EventoDTOView> procuraPorLogradouro(String logradouro) {
 //		Optional<List<Evento>> objEvento = repository.procuraPorLogradouro(logradouro);
 		List<Evento> objEvento = repository.procuraPorLogradouro(logradouro);
-		return objEvento.stream().map(x -> new EventoDTO(x)).collect(Collectors.toList());
+		return objEvento.stream().map(x -> new EventoDTOView(x)).collect(Collectors.toList());
 	}
 	
 	
 //	@Transactional(readOnly = true)
-	public List<EventoDTO> searchByNomeEvento(String nomeEvento) {
+	public List<EventoDTOView> searchByNomeEvento(String nomeEvento) {
 		Optional<List<Evento>> objetoEvento = repository.searchByNomeEvento(nomeEvento);
-		return objetoEvento.get().stream().map(x -> new EventoDTO(x)).collect(Collectors.toList());
+		return objetoEvento.get().stream().map(x -> new EventoDTOView(x)).collect(Collectors.toList());
 	}
 	
 	

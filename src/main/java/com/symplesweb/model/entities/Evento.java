@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -115,7 +117,7 @@ public class Evento implements Serializable{
 		this.endereco = endereco;
 	}
 
-
+	@JsonIgnore
 	public Set<Participante> getParticipante() {
 		Set<Participante> setParticipante = new HashSet<Participante>();
 		for (ParticipanteEvento participanteEvento : participanteEvento) {

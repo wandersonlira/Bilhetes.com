@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.symplesweb.controller.DTO.EventoDTO;
+import com.symplesweb.controller.dto.view.EventoDTOView;
 import com.symplesweb.controller.services.EventoService;
 import com.symplesweb.model.entities.Evento;
 
@@ -23,29 +23,29 @@ public class EventoResource {
 	
 	
 	@GetMapping
-	public ResponseEntity<List<EventoDTO>> findAll() {
-		List<EventoDTO> listEventos = service.findAll();
+	public ResponseEntity<List<EventoDTOView>> findAll() {
+		List<EventoDTOView> listEventos = service.findAll();
 		return ResponseEntity.ok().body(listEventos);
 	}
 	
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<EventoDTO> findById(@PathVariable Long id) {
-		EventoDTO objEventos = service.findById(id);
+	public ResponseEntity<EventoDTOView> findById(@PathVariable Long id) {
+		EventoDTOView objEventos = service.findById(id);
 		return ResponseEntity.ok().body(objEventos);
 	}
 	
 	
 	@GetMapping(value = "/enderecos/{logradouro}")
-	public ResponseEntity<List<EventoDTO>> procuraPorLogradouro(@PathVariable String logradouro) {
-		List<EventoDTO> objEventos = service.procuraPorLogradouro(logradouro);
+	public ResponseEntity<List<EventoDTOView>> procuraPorLogradouro(@PathVariable String logradouro) {
+		List<EventoDTOView> objEventos = service.procuraPorLogradouro(logradouro);
 		return ResponseEntity.ok().body(objEventos);
 	}
 	
 	
 	@GetMapping(value = "/search/{nomeEvento}")
-	public ResponseEntity<List<EventoDTO>> searchByNomeEvento(@PathVariable String nomeEvento) {
-		List<EventoDTO> objetoEvento = service.searchByNomeEvento(nomeEvento);
+	public ResponseEntity<List<EventoDTOView>> searchByNomeEvento(@PathVariable String nomeEvento) {
+		List<EventoDTOView> objetoEvento = service.searchByNomeEvento(nomeEvento);
 		return ResponseEntity.ok().body(objetoEvento);
 	}
 	

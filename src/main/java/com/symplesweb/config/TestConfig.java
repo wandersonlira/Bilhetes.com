@@ -3,18 +3,15 @@ package com.symplesweb.config;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import com.symplesweb.controller.DTO.EventoDTO;
-import com.symplesweb.controller.DTO.ParticipanteDto;
+import com.symplesweb.controller.dto.EnderecoDTO;
+import com.symplesweb.controller.dto.view.EnderecoDTOView;
 import com.symplesweb.controller.repositories.EnderecoRepository;
 import com.symplesweb.controller.repositories.EventoRepository;
 import com.symplesweb.controller.repositories.ParticipanteEventoRepository;
@@ -134,10 +131,20 @@ public class TestConfig implements CommandLineRunner{
 //		for (EventoDTO eventoDto : result) {
 //			System.out.println(eventoDto.toString());
 //		}
-
 		
-
+		
+		
+//		Optional<Endereco> endereco = enderecoRepository.findById(1L);
+//		EnderecoDTOView enderecoDTO = new EnderecoDTOView(endereco.get());
+//		System.out.println(enderecoDTO.toString());
+		
+		
+		
+		
+		
+		
 		
 	}
+		
 
 }
