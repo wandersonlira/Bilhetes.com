@@ -29,4 +29,13 @@ public class ParticipanteService {
 		Optional<Participante> objParticipante = repository.findById(id);
 		return new ParticipanteDtoView(objParticipante.get());
 	}
+	
+	
+	public Participante save(Participante participante) {
+		return repository.save(participante);
+		
+	}
+	
+	
+
 }
