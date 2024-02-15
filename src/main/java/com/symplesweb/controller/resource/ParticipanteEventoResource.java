@@ -1,6 +1,7 @@
 package com.symplesweb.controller.resource;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,22 +27,29 @@ public class ParticipanteEventoResource {
 	
 	@GetMapping
 	public ResponseEntity<List<ParticipanteEventoDtoView>> findAll() {
-		List<ParticipanteEventoDtoView> listParticipanteEvento = service.findAll();
-		return ResponseEntity.ok().body(listParticipanteEvento);
+		List<ParticipanteEventoDtoView> participanteEventoDtoView = service.findAll()
+				.stream().map(participanteEvento -> new ParticipanteEventoDtoView(participanteEvento))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok().body(participanteEventoDtoView);
 	}
 	
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ParticipanteEventoDtoView> findById(@PathVariable Long id) {
-		ParticipanteEventoDtoView objParticipanteEvento = service.findById(id);
-		return ResponseEntity.ok().body(objParticipanteEvento);
+		ParticipanteEvento participanteEvento = service.findById(id);
+		return ResponseEntity.ok().body(new ParticipanteEventoDtoView(participanteEvento));
 	}
 	
 	
 	@GetMapping(value = "/reservas/{cpf}")
 	public ResponseEntity<List<ParticipanteEventoDtoView>> findReservaByCPF(@PathVariable String cpf) {
-		List<ParticipanteEventoDtoView> listParticipanteEvento = service.findReservaByCPF(cpf);
-		return ResponseEntity.ok().body(listParticipanteEvento);
+		List<ParticipanteEvento> listParticipanteEvento = service.findReservaByCPF(cpf);
+		List<ParticipanteEventoDtoView> listParticipanteEventoDtoView = listParticipanteEvento.stream()
+				.map(participanteEvento -> new ParticipanteEventoDtoView(participanteEvento))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok().body(listParticipanteEventoDtoView);
 	}
+	
+	
 
 }

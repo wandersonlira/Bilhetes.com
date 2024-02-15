@@ -1,6 +1,7 @@
 package com.symplesweb.controller.resource;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,21 +24,23 @@ public class EnderecoResource {
 	
 	@GetMapping
 	public ResponseEntity<List<EnderecoDTOView>> findAll() {
-		List<EnderecoDTOView> listEnderecos = service.findAll();
+		List<EnderecoDTOView> listEnderecos = service.findAll().stream().map(endereco -> new EnderecoDTOView(endereco))
+				.collect(Collectors.toList());
 		return ResponseEntity.ok().body(listEnderecos);
 	}
 	
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<EnderecoDTOView> findById(@PathVariable Long id) {
-		EnderecoDTOView objEndereco = service.findById(id);
-		return ResponseEntity.ok().body(objEndereco);
+		Endereco objEndereco = service.findById(id);
+		return ResponseEntity.ok().body(new EnderecoDTOView(objEndereco));
 	}
 	
 	
 	@GetMapping(value = "/logradouro/{logradouro}")
 	public ResponseEntity<List<EnderecoDTOView>> findByLogradouro(@PathVariable String logradouro) {
-		List<EnderecoDTOView> listEnderecos = service.findByLogradouro(logradouro);
+		List<EnderecoDTOView> listEnderecos = service.findByLogradouro(logradouro)
+				.stream().map(endereco -> new EnderecoDTOView(endereco)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listEnderecos);
 	}
 

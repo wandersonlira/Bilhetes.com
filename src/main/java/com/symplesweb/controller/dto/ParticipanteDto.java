@@ -12,11 +12,6 @@ public class ParticipanteDto {
 	private String email;
 	
 	
-	
-	
-
-
-
 
 	public ParticipanteDto() {}
 //	
@@ -57,6 +52,11 @@ public class ParticipanteDto {
 
 	public void setNomeParticipante(String nomeParticipante) {
 		this.nomeParticipante = nomeParticipante;
+	}
+	
+	
+	public String getCpf() {
+		return cpf;
 	}
 	
 	public void setCpf(String cpf) {

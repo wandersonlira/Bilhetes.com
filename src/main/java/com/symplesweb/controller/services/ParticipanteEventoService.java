@@ -20,22 +20,20 @@ public class ParticipanteEventoService {
 	
 	
 	
-	public List<ParticipanteEventoDtoView> findAll(){
-		return repository.findAll().stream().map(participanteEvento -> new ParticipanteEventoDtoView(participanteEvento))
-				.collect(Collectors.toList());
+	public List<ParticipanteEvento> findAll(){
+		return repository.findAll();
 	}
 	
 	
-	public ParticipanteEventoDtoView findById(Long id) {
+	public ParticipanteEvento findById(Long id) {
 		Optional<ParticipanteEvento> objParticipanteEvento = repository.findById(id);
-		return new ParticipanteEventoDtoView(objParticipanteEvento.get());
+		return objParticipanteEvento.get();
 	}
 
 	
 //	@Transactional(readOnly = true)
-	public List<ParticipanteEventoDtoView> findReservaByCPF(String cpf) {
+	public List<ParticipanteEvento> findReservaByCPF(String cpf) {
 		Optional<List<ParticipanteEvento>> listParticipanteEvento = repository.findReservaByCPF(cpf);
-		return listParticipanteEvento.get().stream().map(participanteEvento -> new ParticipanteEventoDtoView(participanteEvento))
-				.collect(Collectors.toList());
+		return listParticipanteEvento.get();
 	}
 }

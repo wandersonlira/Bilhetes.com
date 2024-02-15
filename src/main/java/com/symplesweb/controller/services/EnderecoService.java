@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.symplesweb.controller.dto.view.EnderecoDTOView;
 import com.symplesweb.controller.repositories.EnderecoRepository;
 import com.symplesweb.model.entities.Endereco;
+import com.symplesweb.model.entities.Participante;
 
 @Service
 public class EnderecoService {
@@ -19,22 +20,32 @@ public class EnderecoService {
 	
 	
 	
-	public List<EnderecoDTOView> findAll() {
-		return repository.findAll().stream().map(endereco -> new EnderecoDTOView(endereco)).collect(Collectors.toList());
+	public List<Endereco> findAll() {
+		return repository.findAll();
 	}
 	
 	
-	public EnderecoDTOView findById(Long id) {
+	public Endereco findById(Long id) {
 		Optional<Endereco> objEndereco = repository.findById(id);
-		return new EnderecoDTOView(objEndereco.get());
+		return objEndereco.get();
 	}
 	
 	
-	public List<EnderecoDTOView> findByLogradouro(String logradouro) {
+	public List<Endereco> findByLogradouro(String logradouro) {
 		Optional<List<Endereco>> listEndereco = repository.findByLogradouro(logradouro);
-		return listEndereco.get().stream().map(endereco -> new EnderecoDTOView(endereco)).collect(Collectors.toList());
+		return listEndereco.get();
 	}
-
+	
+	
+	public Endereco save(Endereco endereco) {
+		return repository.save(endereco);
+	}
+	
+	
+	public void delete(Long idEndereco) {
+		Endereco deleteEndereco = this.findById(idEndereco);
+		this.repository.delete(deleteEndereco);
+	}
 	
 
 }

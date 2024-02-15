@@ -3,14 +3,13 @@ package com.symplesweb.controller.dto.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.symplesweb.controller.dto.ParticipanteDto;
 import com.symplesweb.model.entities.ParticipanteEvento;
 
 public class ParticipanteEventoDtoView {
 	
 	
 	private Long participanteEventoDtoView;
-	private ParticipanteDto participanteDto = new ParticipanteDto();
+	private ParticipanteDtoView participanteDtoView = new ParticipanteDtoView();
 	private List<EventoOutputParticipante> listEventoDto = new ArrayList<EventoOutputParticipante>();
 	
 	
@@ -23,9 +22,10 @@ public class ParticipanteEventoDtoView {
 		
 		participanteEventoDtoView = projection.getId_ParticipanteEvento();
 		
-		participanteDto.setIdParticipante(projection.getParticipante().getIdParticipante());
-		participanteDto.setNomeParticipante(projection.getParticipante().getNomeParticipante());
-		participanteDto.setEmail(projection.getParticipante().getEmail());
+		participanteDtoView.setIdParticipante(projection.getParticipante().getIdParticipante());
+		participanteDtoView.setNomeParticipante(projection.getParticipante().getNomeParticipante());
+		participanteDtoView.setEmail(projection.getParticipante().getEmail());
+		
 		
 		EventoOutputParticipante eventoDto = new EventoOutputParticipante(projection.getEvento());
 		
@@ -46,13 +46,13 @@ public class ParticipanteEventoDtoView {
 	}
 
 
-	public ParticipanteDto getParticipanteDto() {
-		return participanteDto;
+	public ParticipanteDtoView getParticipanteDtoView() {
+		return participanteDtoView;
 	}
 
 
-	public void setParticipanteDto(ParticipanteDto participanteDto) {
-		this.participanteDto = participanteDto;
+	public void setParticipanteDtoView(ParticipanteDtoView participanteDtoView) {
+		this.participanteDtoView = participanteDtoView;
 	}
 
 
