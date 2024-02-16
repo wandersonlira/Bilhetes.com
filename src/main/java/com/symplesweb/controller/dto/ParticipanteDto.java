@@ -10,8 +10,9 @@ public class ParticipanteDto {
 	private String nomeParticipante;
 	private String cpf;
 	private String email;
-	
-	
+	private Long idEvento;
+
+
 
 	public ParticipanteDto() {}
 //	
@@ -71,6 +72,16 @@ public class ParticipanteDto {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public Long getIdEvento() {
+		return idEvento;
+	}
+
+
+
+	public void setIdEvento(Long idEvento) {
+		this.idEvento = idEvento;
 	}
 
 

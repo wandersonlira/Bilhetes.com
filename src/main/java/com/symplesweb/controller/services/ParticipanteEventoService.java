@@ -2,12 +2,10 @@ package com.symplesweb.controller.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.symplesweb.controller.dto.view.ParticipanteEventoDtoView;
 import com.symplesweb.controller.repositories.ParticipanteEventoRepository;
 import com.symplesweb.model.entities.ParticipanteEvento;
 
@@ -18,6 +16,11 @@ public class ParticipanteEventoService {
 	@Autowired
 	ParticipanteEventoRepository repository;
 	
+	
+	
+	public ParticipanteEvento save(ParticipanteEvento participanteEvento) {
+		return this.repository.save(participanteEvento);
+	}
 	
 	
 	public List<ParticipanteEvento> findAll(){
@@ -36,4 +39,12 @@ public class ParticipanteEventoService {
 		Optional<List<ParticipanteEvento>> listParticipanteEvento = repository.findReservaByCPF(cpf);
 		return listParticipanteEvento.get();
 	}
+	
+	
+	public void deleteById(Long idParticipanteEvento) {
+		ParticipanteEvento deleteParticipanteEvento = this.findById(idParticipanteEvento);
+		this.repository.delete(deleteParticipanteEvento);
+	}
+	
+	
 }

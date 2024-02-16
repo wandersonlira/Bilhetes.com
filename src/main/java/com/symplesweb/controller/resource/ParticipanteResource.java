@@ -61,8 +61,9 @@ public class ParticipanteResource {
 	
 	
 	
-//	public 
-	
+//	public ResponseEntity<ParticipanteDtoView> updateParticipante(Long idParticipante, ParticipanteDto participanteDto) {
+//	Participante participante = this.service.findById(idParticipante)
+//	}
 	
 	
 	@DeleteMapping(value = "/{idParticipante}")

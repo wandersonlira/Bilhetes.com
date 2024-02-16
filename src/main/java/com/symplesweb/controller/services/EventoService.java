@@ -21,6 +21,11 @@ public class EventoService {
 	
 	
 	
+	public Evento save(Evento evento) {
+		return this.repository.save(evento);
+	}
+	
+	
 	public List<Evento> findAll() {
 		return repository.findAll();
 	}
@@ -43,6 +48,12 @@ public class EventoService {
 	public List<Evento> searchByNomeEvento(String nomeEvento) {
 		Optional<List<Evento>> objetoEvento = repository.searchByNomeEvento(nomeEvento);
 		return objetoEvento.get();
+	}
+	
+	
+	public void deleteById(Long idEvento) {
+		Evento deleteEvento = this.findById(idEvento);
+		this.repository.delete(deleteEvento);
 	}
 	
 	
