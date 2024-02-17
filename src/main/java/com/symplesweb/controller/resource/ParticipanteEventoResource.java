@@ -1,7 +1,6 @@
 package com.symplesweb.controller.resource;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.symplesweb.controller.dto.ParticipanteEventoDto;
 import com.symplesweb.controller.dto.view.ParticipanteEventoDtoView;
-import com.symplesweb.controller.repositories.EventoRepository;
-import com.symplesweb.controller.repositories.ParticipanteRepository;
+import com.symplesweb.controller.services.EventoService;
 import com.symplesweb.controller.services.ParticipanteEventoService;
+import com.symplesweb.controller.services.ParticipanteService;
 import com.symplesweb.model.entities.Evento;
 import com.symplesweb.model.entities.Participante;
 import com.symplesweb.model.entities.ParticipanteEvento;
@@ -34,22 +33,23 @@ public class ParticipanteEventoResource {
 	@Autowired
 	private ParticipanteEventoService service;
 	@Autowired
-	private EventoRepository eventoRepository;
+	private EventoService eventoService;
 	@Autowired
-	private ParticipanteRepository participanteRepository;
+	private ParticipanteService participanteService;
 	
 	
 	
 	@PostMapping
-	public ResponseEntity<ParticipanteEvento> save(@RequestBody ParticipanteEventoDto participanteEventoDto) {
+	public ResponseEntity<ParticipanteEventoDtoView> save(@RequestBody ParticipanteEventoDto participanteEventoDto) {
 		
-		Optional<Participante> entityParticipante = this.participanteRepository.findById(participanteEventoDto.getIdEvento());
-		Optional<Evento> entityEvento;
+		Participante entityParticipante = this.participanteService.findById(participanteEventoDto.getIdParticipante());
+		Evento entityEvento = this.eventoService.findById(participanteEventoDto.getIdEvento());
 		
+		ParticipanteEvento novoParticipanteEvento = new ParticipanteEvento(null, entityParticipante, entityEvento);
 		
+		novoParticipanteEvento = this.service.save(novoParticipanteEvento);
 		
-		ParticipanteEvento novoParticipanteEvento = this.service.save(participanteEvento);
-		return ResponseEntity.status(HttpStatus.CREATED).body(novoParticipanteEvento);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new ParticipanteEventoDtoView(novoParticipanteEvento));
 	}
 	
 	

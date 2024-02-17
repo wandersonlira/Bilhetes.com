@@ -42,7 +42,7 @@ public class EnderecoService {
 	}
 	
 	
-	public void delete(Long idEndereco) {
+	public void deleteById(Long idEndereco) {
 		Endereco deleteEndereco = this.findById(idEndereco);
 		this.repository.delete(deleteEndereco);
 	}

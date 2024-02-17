@@ -8,6 +8,12 @@ public class ParticipanteEventoDto {
 	
 	
 	
+	public ParticipanteEventoDto(Long id_ParticipanteEvento, Long idParticipante, Long idEvento) {
+		super();
+		this.id_ParticipanteEvento = id_ParticipanteEvento;
+		this.idParticipante = idParticipante;
+		this.idEvento = idEvento;
+	}
 	
 	
 	public Long getId_ParticipanteEvento() {

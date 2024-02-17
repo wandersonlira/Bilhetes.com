@@ -1,7 +1,6 @@
 package com.symplesweb.controller.resource;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.symplesweb.controller.dto.EventoDto;
 import com.symplesweb.controller.dto.view.EventoDTOView;
-import com.symplesweb.controller.repositories.EnderecoRepository;
+import com.symplesweb.controller.services.EnderecoService;
 import com.symplesweb.controller.services.EventoService;
 import com.symplesweb.model.entities.Endereco;
 import com.symplesweb.model.entities.Evento;
@@ -31,14 +30,14 @@ public class EventoResource {
 	@Autowired
 	private EventoService service;
 	@Autowired
-	private EnderecoRepository repository;
+	private EnderecoService enderecoService;
 	
 	
 	
 	@PostMapping
 	public ResponseEntity<EventoDTOView> save(@RequestBody EventoDto eventoDto) {
 		
-		Optional<Endereco> entityEndereco = this.repository.findById(eventoDto.getIdEndereco());
+		Endereco entityEndereco = this.enderecoService.findById(eventoDto.getIdEndereco());
 		
 		Evento entityEvento = new Evento(null, 
 				eventoDto.getNomeEvento(), 
@@ -46,12 +45,12 @@ public class EventoResource {
 				eventoDto.getHoraEvento(), 
 				eventoDto.getIngressos(), 
 				eventoDto.getIngressoComprado(),
-				entityEndereco.get());
+				entityEndereco);
 		
 		entityEvento = this.service.save(entityEvento);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(new EventoDTOView(entityEvento));
-	} // Fazer refatorização deste endpoint
+	}
 	
 	
 	@GetMapping
