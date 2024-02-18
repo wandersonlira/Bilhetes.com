@@ -8,14 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.symplesweb.controller.dto.ParticipanteEventoDto;
+import com.symplesweb.controller.dto.ParticipanteEventoUpdateDto;
 import com.symplesweb.controller.dto.view.ParticipanteEventoDtoView;
 import com.symplesweb.controller.services.EventoService;
 import com.symplesweb.controller.services.ParticipanteEventoService;
@@ -77,6 +80,27 @@ public class ParticipanteEventoResource {
 				.collect(Collectors.toList());
 		return ResponseEntity.ok().body(listParticipanteEventoDtoView);
 	}
+	
+	
+	
+	@PatchMapping
+	public ResponseEntity<ParticipanteEventoDtoView> updateParticipanteEvento(
+			@RequestParam(value = "idParticipanteEvento") Long idParticipanteEvento,
+			@RequestBody ParticipanteEventoUpdateDto participanteEventoUpdateDto) {
+		
+		ParticipanteEvento participantEvent = this.service.findById(idParticipanteEvento);
+		
+		if (participanteEventoUpdateDto.getIdEvento() != participantEvent.getEvento().getIdEvento()) {
+			Evento entityEvent = this.eventoService.findById(
+					participanteEventoUpdateDto.getIdEvento());
+			participantEvent.setEvento(entityEvent);
+		}
+		
+		ParticipanteEvento participantEventToUpdated = this.service.save(participantEvent);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(new ParticipanteEventoDtoView(participantEventToUpdated));
+	}
+	
 	
 	
 	@DeleteMapping(value = "/{idParticipanteEvento}")

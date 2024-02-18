@@ -61,6 +61,11 @@ public class ParticipanteEvento implements Serializable{
 		return evento;
 	}
 	
+	public void setEvento(Evento evento) {
+		this.evento = evento;
+	}
+	
+	
 	
 
 	@Override

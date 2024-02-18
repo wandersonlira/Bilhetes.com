@@ -8,14 +8,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.symplesweb.controller.dto.EventoDto;
+import com.symplesweb.controller.dto.EventoUpdateDto;
 import com.symplesweb.controller.dto.view.EventoDTOView;
 import com.symplesweb.controller.services.EnderecoService;
 import com.symplesweb.controller.services.EventoService;
@@ -37,17 +41,12 @@ public class EventoResource {
 	@PostMapping
 	public ResponseEntity<EventoDTOView> save(@RequestBody EventoDto eventoDto) {
 		
+		Evento entityEvento = eventoDto.toEntity();
 		Endereco entityEndereco = this.enderecoService.findById(eventoDto.getIdEndereco());
 		
-		Evento entityEvento = new Evento(null, 
-				eventoDto.getNomeEvento(), 
-				eventoDto.getDataEvento(), 
-				eventoDto.getHoraEvento(), 
-				eventoDto.getIngressos(), 
-				eventoDto.getIngressoComprado(),
-				entityEndereco);
+		entityEvento.setEndereco(entityEndereco);
 		
-		entityEvento = this.service.save(entityEvento);
+		this.service.save(entityEvento);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(new EventoDTOView(entityEvento));
 	}
@@ -84,12 +83,24 @@ public class EventoResource {
 	}
 	
 	
-//	@PutMapping
-//	public ResponseEntity<EventoDtoView> updateEvento(
-//			@RequestParam(value = "eventoId") Long IdEvento,
-//			@RequestBody EventoDto eventoDto) {
-//		// IMPLEMENTAR O CORPO DO MÉTODO
-//	}
+	@PatchMapping
+	public ResponseEntity<EventoDTOView> updateEvento(@RequestParam(value = "eventoId") Long IdEvento,
+			@RequestBody EventoUpdateDto eventoUpdateDto) {
+		
+		Evento entityEvento = this.service.findById(IdEvento);
+		
+		if (eventoUpdateDto.getIdEndereco() != entityEvento.getEndereco().getIdEndereco()) {
+			
+			entityEvento.setEndereco(
+					this.enderecoService.findById(eventoUpdateDto.getIdEndereco())
+					);
+		}
+		
+		Evento eventoToUpdate = eventoUpdateDto.toEntity(entityEvento);
+		Evento eventoUpdated = this.service.save(eventoToUpdate);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(new EventoDTOView(eventoUpdated));
+	}
 	
 	
 	@DeleteMapping(value = "/{idEvento}")

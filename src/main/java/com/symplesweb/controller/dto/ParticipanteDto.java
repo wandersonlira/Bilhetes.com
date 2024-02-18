@@ -1,49 +1,33 @@
 package com.symplesweb.controller.dto;
 
+import java.io.Serializable;
+
 import com.symplesweb.model.entities.Participante;
 
-public class ParticipanteDto {
+
+
+public class ParticipanteDto implements Serializable{
+	private static final long serialVersionUID = 1L;
 	
 	
-	
-	private Long idParticipante;
 	private String nomeParticipante;
 	private String cpf;
 	private String email;
-	private Long idEvento;
 
 
 
 	public ParticipanteDto() {}
-//	
-//	
-//	private ParticipanteDto(Long idParticipante, String nomeParticipante, String email) {
-//		super();
-//		this.idParticipante = idParticipante;
-//		this.nomeParticipante = nomeParticipante;
-//		this.email = email;
-//	}
 	
 	
+	public Participante toEntity() {
+		Participante participant = new Participante(null,
+				this.nomeParticipante,
+				this.cpf,
+				this.email);
+		return participant;
+	}
+
 	
-	public ParticipanteDto(Participante projection) {
-		
-		this.idParticipante = projection.getIdParticipante();
-		this.nomeParticipante = projection.getNomeParticipante();
-		this.cpf = projection.getCpf();
-		this.email = projection.getEmail();
-		
-	}
-
-
-	public Long getIdParticipante() {
-		return idParticipante;
-	}
-
-
-	public void setIdParticipante(Long idParticipante) {
-		this.idParticipante = idParticipante;
-	}
 
 
 	public String getNomeParticipante() {
@@ -73,28 +57,6 @@ public class ParticipanteDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public Long getIdEvento() {
-		return idEvento;
-	}
-
-
-
-	public void setIdEvento(Long idEvento) {
-		this.idEvento = idEvento;
-	}
-
-
-	@Override
-	public String toString() {
-		return "ParticipanteDto [idParticipante=" + idParticipante + ", nomeParticipante=" + nomeParticipante + 
-				", cpf=" + cpf + ", email=" + email + "]";
-	}
-	
-	
-	
-	
-	
 	
 	
 

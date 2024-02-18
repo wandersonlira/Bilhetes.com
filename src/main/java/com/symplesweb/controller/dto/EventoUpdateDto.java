@@ -5,42 +5,25 @@ import java.time.LocalDateTime;
 
 import com.symplesweb.model.entities.Evento;
 
-public class EventoDto {
+public class EventoUpdateDto {
 	
 	private String nomeEvento;
 	private LocalDate dataEvento;
 	private LocalDateTime horaEvento;
 	private Integer ingressos;
-	private Integer ingressoComprado;
 	private Long idEndereco;
 	
 	
 	
-	public EventoDto(String nomeEvento, LocalDate dataEvento, LocalDateTime horaEvento,
-			Integer ingressos, Integer ingressoComprado, Long idEndereco) {
-		super();
-		this.nomeEvento = nomeEvento;
-		this.dataEvento = dataEvento;
-		this.horaEvento = horaEvento;
-		this.ingressos = ingressos;
-		this.ingressoComprado = ingressoComprado;
-		this.idEndereco = idEndereco;
-	}
 	
-	
-	
-	public Evento toEntity() {
-		Evento evento = new Evento(null,
-				this.nomeEvento, 
-				this.dataEvento, 
-				this.horaEvento, 
-				this.ingressos, 
-				this.ingressoComprado, 
-				null);
-		
+	public Evento toEntity(Evento evento) {
+		evento.setNomeEvento(this.nomeEvento);
+		evento.setDataEvento(this.dataEvento);
+		evento.setHoraEvento(this.horaEvento);
+		evento.setIngressos(this.ingressos);
 		return evento;
 	}
-
+	
 
 
 	public String getNomeEvento() {
@@ -48,11 +31,9 @@ public class EventoDto {
 	}
 
 
-
 	public void setNomeEvento(String nomeEvento) {
 		this.nomeEvento = nomeEvento;
 	}
-
 
 
 	public LocalDate getDataEvento() {
@@ -60,11 +41,9 @@ public class EventoDto {
 	}
 
 
-
 	public void setDataEvento(LocalDate dataEvento) {
 		this.dataEvento = dataEvento;
 	}
-
 
 
 	public LocalDateTime getHoraEvento() {
@@ -72,11 +51,9 @@ public class EventoDto {
 	}
 
 
-
 	public void setHoraEvento(LocalDateTime horaEvento) {
 		this.horaEvento = horaEvento;
 	}
-
 
 
 	public Integer getIngressos() {
@@ -84,23 +61,9 @@ public class EventoDto {
 	}
 
 
-
 	public void setIngressos(Integer ingressos) {
 		this.ingressos = ingressos;
 	}
-
-
-
-	public Integer getIngressoComprado() {
-		return ingressoComprado;
-	}
-
-
-
-	public void setIngressoComprado(Integer ingressoComprado) {
-		this.ingressoComprado = ingressoComprado;
-	}
-
 
 
 	public Long getIdEndereco() {
@@ -108,13 +71,10 @@ public class EventoDto {
 	}
 
 
-
 	public void setIdEndereco(Long idEndereco) {
 		this.idEndereco = idEndereco;
 	}
-	
-	
-	
+
 	
 
 }

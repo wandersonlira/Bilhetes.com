@@ -8,14 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.symplesweb.controller.dto.ParticipanteDto;
+import com.symplesweb.controller.dto.ParticipanteUpdateDto;
 import com.symplesweb.controller.dto.view.ParticipanteDtoView;
 import com.symplesweb.controller.services.ParticipanteService;
 import com.symplesweb.model.entities.Participante;
@@ -32,12 +35,9 @@ public class ParticipanteResource {
 	@PostMapping
 	public ResponseEntity<ParticipanteDtoView> save(@RequestBody ParticipanteDto participanteDto) {
 		
-		Participante entityParticipante = new Participante(
-				null, 
-				participanteDto.getNomeParticipante(),
-				participanteDto.getCpf(),
-				participanteDto.getEmail());
-		entityParticipante = service.save(entityParticipante);
+		Participante entityParticipante = participanteDto.toEntity();
+		
+		this.service.save(entityParticipante); // contém o retorno da entidade com o respectivo ID
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(new ParticipanteDtoView(entityParticipante));	
 	}
@@ -60,10 +60,16 @@ public class ParticipanteResource {
 	}
 	
 	
+	@PatchMapping
+	public ResponseEntity<ParticipanteDtoView> updateParticipante(@RequestParam(value = "participanteId") Long idParticipante, 
+			@RequestBody ParticipanteUpdateDto participanteUpdateDto) {
+		
+	Participante entityParticipante = this.service.findById(idParticipante);
+	entityParticipante = participanteUpdateDto.toEntity(entityParticipante);
+	entityParticipante = this.service.save(entityParticipante);
 	
-//	public ResponseEntity<ParticipanteDtoView> updateParticipante(Long idParticipante, ParticipanteDto participanteDto) {
-//	Participante participante = this.service.findById(idParticipante)
-//	}
+	return ResponseEntity.status(HttpStatus.OK).body(new ParticipanteDtoView(entityParticipante));
+	}
 	
 	
 	@DeleteMapping(value = "/{idParticipante}")
