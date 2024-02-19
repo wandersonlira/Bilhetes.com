@@ -77,7 +77,7 @@ public class Participante implements Serializable{
 	
 	
 
-	@JsonIgnore
+//	@JsonIgnore
 	public List<Evento> getEvento() {
 		List<Evento> listEvento = new ArrayList<Evento>();
 		for (ParticipanteEvento participanteEvento : participanteEventos) {

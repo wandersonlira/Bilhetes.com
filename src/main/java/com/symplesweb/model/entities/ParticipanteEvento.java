@@ -3,6 +3,7 @@ package com.symplesweb.model.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -59,6 +60,11 @@ public class ParticipanteEvento implements Serializable{
 	public Evento getEvento() {
 		return evento;
 	}
+	
+	public void setEvento(Evento evento) {
+		this.evento = evento;
+	}
+	
 	
 	
 

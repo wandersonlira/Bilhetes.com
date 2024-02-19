@@ -1,4 +1,4 @@
-package com.symplesweb.controller.DTO;
+package com.symplesweb.controller.dto;
 
 import com.symplesweb.model.entities.Endereco;
 
@@ -18,31 +18,45 @@ public class EnderecoDTO {
 	public EnderecoDTO() {}
 	
 
-	public EnderecoDTO(Long idEndereco, String nomeLocal, String logradouro, String numLocal, String complemento,
-			String bairro, String localidade, String uf, String cep) {
-		super();
-		this.idEndereco = idEndereco;
-		this.nomeLocal = nomeLocal;
-		this.logradouro = logradouro;
-		this.numLocal = numLocal;
-		this.complemento = complemento;
-		this.bairro = bairro;
-		this.localidade = localidade;
-		this.uf = uf;
-		this.cep = cep;
-	}
+//	public EnderecoDTO(Long idEndereco, String nomeLocal, String logradouro, String numLocal, String complemento,
+//			String bairro, String localidade, String uf, String cep) {
+//		super();
+//		this.idEndereco = idEndereco;
+//		this.nomeLocal = nomeLocal;
+//		this.logradouro = logradouro;
+//		this.numLocal = numLocal;
+//		this.complemento = complemento;
+//		this.bairro = bairro;
+//		this.localidade = localidade;
+//		this.uf = uf;
+//		this.cep = cep;
+//	}
 
 	
-	public EnderecoDTO(Endereco projection) {
-		idEndereco = projection.getIdEndereco();
-		nomeLocal = projection.getNomeLocal();
-		logradouro = projection.getLogradouro();
-		numLocal = projection.getNumLocal();
-		complemento = projection.getComplemento();
-		bairro = projection.getBairro();
-		localidade = projection.getLocalidade();
-		uf = projection.getUf();
-		cep = projection.getCep();
+//	public EnderecoDTO(Endereco projection) {
+//		idEndereco = projection.getIdEndereco();
+//		nomeLocal = projection.getNomeLocal();
+//		logradouro = projection.getLogradouro();
+//		numLocal = projection.getNumLocal();
+//		complemento = projection.getComplemento();
+//		bairro = projection.getBairro();
+//		localidade = projection.getLocalidade();
+//		uf = projection.getUf();
+//		cep = projection.getCep();
+//	}
+	
+	
+	public Endereco toEntity() {
+		Endereco address = new Endereco(this.cep, this.logradouro, this.complemento, this.bairro, this.localidade, this.uf,
+				null,
+				null,
+				null,
+				null,
+				null,
+				this.nomeLocal,
+				this.numLocal);
+		return address;
+				
 	}
 
 	
@@ -127,16 +141,6 @@ public class EnderecoDTO {
 		this.cep = cep;
 	}
 
-
-	@Override
-	public String toString() {
-		return "EnderecoDTO [idEndereco=" + idEndereco + ", nomeLocal=" + nomeLocal + ", logradouro=" + logradouro
-				+ ", numLocal=" + numLocal + ", complemento=" + complemento + ", bairro=" + bairro + ", localidade="
-				+ localidade + ", uf=" + uf + ", cep=" + cep + "]";
-	}
-	
-	
-	
 	
 	
 

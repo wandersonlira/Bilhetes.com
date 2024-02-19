@@ -18,6 +18,11 @@ public class ParticipanteEventoService {
 	
 	
 	
+	public ParticipanteEvento save(ParticipanteEvento participanteEvento) {
+		return this.repository.save(participanteEvento);
+	}
+	
+	
 	public List<ParticipanteEvento> findAll(){
 		return repository.findAll();
 	}
@@ -34,4 +39,12 @@ public class ParticipanteEventoService {
 		Optional<List<ParticipanteEvento>> listParticipanteEvento = repository.findReservaByCPF(cpf);
 		return listParticipanteEvento.get();
 	}
+	
+	
+	public void deleteById(Long idParticipanteEvento) {
+		ParticipanteEvento deleteParticipanteEvento = this.findById(idParticipanteEvento);
+		this.repository.delete(deleteParticipanteEvento);
+	}
+	
+	
 }

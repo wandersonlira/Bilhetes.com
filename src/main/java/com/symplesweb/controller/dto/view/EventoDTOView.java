@@ -1,11 +1,12 @@
-package com.symplesweb.controller.DTO;
+package com.symplesweb.controller.dto.view;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.symplesweb.controller.dto.EnderecoDTO;
 import com.symplesweb.model.entities.Evento;
 
-public class EventoDTO {
+public class EventoDTOView {
 
 	private Long idEvento;
 	private String nomeEvento;
@@ -17,10 +18,10 @@ public class EventoDTO {
 	
 
 	
-	public EventoDTO() {}
+	public EventoDTOView() {}
 	
 	
-	public EventoDTO(Long idEvento, String nomeEvento, LocalDate dataEvento, LocalDateTime horaEvento, Integer ingressos,
+	public EventoDTOView(Long idEvento, String nomeEvento, LocalDate dataEvento, LocalDateTime horaEvento, Integer ingressos,
 			Integer ingressoComprado, EnderecoDTO enderecoDTO) {
 		super();
 		this.idEvento = idEvento;
@@ -33,7 +34,7 @@ public class EventoDTO {
 	}
 
 
-	public EventoDTO(Evento projection) {
+	public EventoDTOView(Evento projection) {
 		super();
 		idEvento = projection.getIdEvento();
 		nomeEvento = projection.getNomeEvento();
@@ -118,10 +119,6 @@ public class EventoDTO {
 		return "EventoDTO [nomeEvento=" + nomeEvento + ", dataEvento=" + dataEvento + ", horaEvento=" + horaEvento + ", ingressos="
 				+ ingressos + ", ingressoComprado=" + ingressoComprado + ", enderecosDTO=" + enderecoDTO.toString()+ "]";
 	}
-
-
-
-
 
 	
 	

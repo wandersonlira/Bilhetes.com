@@ -22,8 +22,25 @@ public class ParticipanteService {
 	}
 	
 	
+	
 	public Participante findById(Long id) {
 		Optional<Participante> objParticipante = repository.findById(id);
 		return objParticipante.get();
 	}
+	
+	
+	
+	public Participante save(Participante participante) {
+		return repository.save(participante);
+	}
+	
+
+	
+	public void deleteById(Long idParticipante) {
+		Participante deleteParticipante = this.findById(idParticipante);
+		this.repository.delete(deleteParticipante);
+	}
+	
+	
+
 }

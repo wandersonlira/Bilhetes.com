@@ -1,19 +1,24 @@
-package com.symplesweb.controller.DTO;
+package com.symplesweb.controller.dto.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.symplesweb.model.entities.Evento;
 import com.symplesweb.model.entities.Participante;
 
-public class ParticipanteDto {
+public class ParticipanteDtoView {
 	
 	
 	
 	private Long idParticipante;
 	private String nomeParticipante;
 	private String email;
+	private List<EventoOutputParticipante> listEventoDto = new ArrayList<EventoOutputParticipante>();
 	
 	
 	
 	
-	public ParticipanteDto() {}
+	public ParticipanteDtoView() {}
 //	
 //	
 //	private ParticipanteDto(Long idParticipante, String nomeParticipante, String email) {
@@ -25,13 +30,21 @@ public class ParticipanteDto {
 	
 	
 	
-	public ParticipanteDto(Participante projection) {
+	public ParticipanteDtoView(Participante projection) {
 		
 		this.idParticipante = projection.getIdParticipante();
 		this.nomeParticipante = projection.getNomeParticipante();
 		this.email = projection.getEmail();
 		
+		
+		for(Evento evento : projection.getEvento()) {
+			EventoOutputParticipante novoEventoDto = new EventoOutputParticipante(evento);
+			
+			listEventoDto.add(novoEventoDto);
+		}
+		
 	}
+
 
 
 	public Long getIdParticipante() {
@@ -39,9 +52,11 @@ public class ParticipanteDto {
 	}
 
 
+
 	public void setIdParticipante(Long idParticipante) {
 		this.idParticipante = idParticipante;
 	}
+
 
 
 	public String getNomeParticipante() {
@@ -49,9 +64,11 @@ public class ParticipanteDto {
 	}
 
 
+
 	public void setNomeParticipante(String nomeParticipante) {
 		this.nomeParticipante = nomeParticipante;
 	}
+
 
 
 	public String getEmail() {
@@ -59,23 +76,31 @@ public class ParticipanteDto {
 	}
 
 
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
 
+	
+	public List<EventoOutputParticipante> getListEventoDto() {
+		return listEventoDto;
+	}
+
+
+
+	public void setListEventoDto(List<EventoOutputParticipante> listEventoDto) {
+		this.listEventoDto = listEventoDto;
+	}
+
+
+
 	@Override
 	public String toString() {
-		return "ParticipanteDto [idParticipante=" + idParticipante + ", nomeParticipante=" + nomeParticipante
-				+ ", email=" + email + "]";
+		return "ParticipanteDtoView [idParticipante=" + idParticipante + ", nomeParticipante=" + nomeParticipante
+				+ ", email=" + email + ", listEventoDto=" + listEventoDto + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
+
 
 
 }
