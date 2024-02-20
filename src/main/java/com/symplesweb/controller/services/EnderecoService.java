@@ -2,15 +2,12 @@ package com.symplesweb.controller.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.symplesweb.controller.dto.view.EnderecoDTOView;
 import com.symplesweb.controller.repositories.EnderecoRepository;
 import com.symplesweb.model.entities.Endereco;
-import com.symplesweb.model.entities.Participante;
 
 @Service
 public class EnderecoService {
