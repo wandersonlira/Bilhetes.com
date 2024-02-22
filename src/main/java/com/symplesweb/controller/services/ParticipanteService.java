@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.symplesweb.controller.repositories.ParticipanteRepository;
+import com.symplesweb.controller.services.exceptions.DatabaseException;
+import com.symplesweb.controller.services.exceptions.ResourceNotFoundException;
 import com.symplesweb.model.entities.Participante;
 
 @Service
@@ -25,7 +28,7 @@ public class ParticipanteService {
 	
 	public Participante findById(Long id) {
 		Optional<Participante> objParticipante = repository.findById(id);
-		return objParticipante.get();
+		return objParticipante.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	
@@ -38,7 +41,14 @@ public class ParticipanteService {
 	
 	public void deleteById(Long idParticipante) {
 		Participante deleteParticipante = this.findById(idParticipante);
-		this.repository.delete(deleteParticipante);
+		try {
+			this.repository.delete(deleteParticipante);
+			
+		} catch (DataIntegrityViolationException e){
+			throw new DatabaseException(e.getMessage());
+			
+		}
+		
 	}
 	
 	
