@@ -1,6 +1,7 @@
 package com.symplesweb.controller.resource.exception;
 
 import java.time.Instant;
+import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,20 @@ public class ResourceExceptionHandler {
 		StandarError err = new StandarError(error, Instant.now(), status.value(), exception.getMessage(), request.getRequestURI());
 		
 		return ResponseEntity.status(status).body(err);
+	}
+	
+	
+	
+	@ExceptionHandler(NoSuchElementException.class)
+	public ResponseEntity<StandarError> handlerNoSuchElementException(NoSuchElementException exception,
+			HttpServletRequest request) {
+		
+		String error = "Bad Request! Consult the documentation";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandarError standError = new StandarError(error, Instant.now(), status.value(), 
+				exception.getMessage(), request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(standError);
 	}
 
 }

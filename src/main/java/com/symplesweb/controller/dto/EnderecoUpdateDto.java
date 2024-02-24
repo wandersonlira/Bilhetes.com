@@ -4,18 +4,20 @@ import java.io.Serializable;
 
 import com.symplesweb.model.entities.Endereco;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public class EnderecoUpdateDto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	
-	private String nomeLocal;
+	@NotEmpty(message = "You didn't enter your Local!") private String nomeLocal;
 //	private String logradouro;
-	private String numLocal;
+	@NotEmpty(message = "You didn't enter your Numero Local!") private String numLocal;
 //	private String complemento;
 //	private String bairro;
 //	private String localidade;
 //	private String uf;
-	private String cep;
+	@NotEmpty(message = "You didn't enter your CEP!") private String cep;
 	
 	
 	

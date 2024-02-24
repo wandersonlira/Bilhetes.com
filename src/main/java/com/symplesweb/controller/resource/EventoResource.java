@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +25,8 @@ import com.symplesweb.controller.services.EventoService;
 import com.symplesweb.model.entities.Endereco;
 import com.symplesweb.model.entities.Evento;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/eventos")
 public class EventoResource {
@@ -39,7 +40,7 @@ public class EventoResource {
 	
 	
 	@PostMapping
-	public ResponseEntity<EventoDTOView> save(@RequestBody EventoDto eventoDto) {
+	public ResponseEntity<EventoDTOView> save(@RequestBody @Valid EventoDto eventoDto) {
 		
 		Evento entityEvento = eventoDto.toEntity();
 		Endereco entityEndereco = this.enderecoService.findById(eventoDto.getIdEndereco());
@@ -85,7 +86,7 @@ public class EventoResource {
 	
 	@PatchMapping
 	public ResponseEntity<EventoDTOView> updateEvento(@RequestParam(value = "eventoId") Long IdEvento,
-			@RequestBody EventoUpdateDto eventoUpdateDto) {
+			@RequestBody @Valid EventoUpdateDto eventoUpdateDto) {
 		
 		Evento entityEvento = this.service.findById(IdEvento);
 		
@@ -106,9 +107,8 @@ public class EventoResource {
 	@DeleteMapping(value = "/{idEvento}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void deleteById(@PathVariable Long idEvento) {
-		this.service.deleteById(idEvento);
+			this.service.deleteById(idEvento);
 	}
-	
 	
 
 }

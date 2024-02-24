@@ -3,6 +3,7 @@ package com.symplesweb.controller.dto.view;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.symplesweb.controller.dto.EnderecoDTO;
 import com.symplesweb.model.entities.Evento;
 
@@ -11,6 +12,7 @@ public class EventoDTOView {
 	private Long idEvento;
 	private String nomeEvento;
 	private LocalDate dataEvento;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "GMT")
 	private LocalDateTime horaEvento;
 	private Integer ingressos;
 	private Integer ingressoComprado;

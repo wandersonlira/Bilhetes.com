@@ -2,14 +2,14 @@ package com.symplesweb.controller.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.symplesweb.controller.dto.view.EventoDTOView;
 import com.symplesweb.controller.repositories.EventoRepository;
+import com.symplesweb.controller.services.exceptions.DatabaseException;
+import com.symplesweb.controller.services.exceptions.ResourceNotFoundException;
 import com.symplesweb.model.entities.Evento;
 
 
@@ -32,13 +32,12 @@ public class EventoService {
 	
 	
 	public Evento findById(Long id) {
-		Optional<Evento> objEvento = repository.findById(id);
-		return objEvento.get();
+		Optional<Evento> objetoEvento = repository.findById(id);
+		return objetoEvento.orElseThrow(() ->  new ResourceNotFoundException(id));
 	}
 	
 	
 	public List<Evento> procuraPorLogradouro(String logradouro) {
-//		Optional<List<Evento>> objEvento = repository.procuraPorLogradouro(logradouro);
 		List<Evento> objEvento = repository.procuraPorLogradouro(logradouro);
 		return objEvento;
 	}
@@ -53,7 +52,11 @@ public class EventoService {
 	
 	public void deleteById(Long idEvento) {
 		Evento deleteEvento = this.findById(idEvento);
-		this.repository.delete(deleteEvento);
+		try {
+			this.repository.delete(deleteEvento);
+		} catch (DataIntegrityViolationException exception) {
+			throw new DatabaseException(exception.getMessage());
+			}
 	}
 	
 	

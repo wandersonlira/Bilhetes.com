@@ -2,17 +2,20 @@ package com.symplesweb.controller.dto;
 
 import com.symplesweb.model.entities.Endereco;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public class EnderecoDTO {
 	
 	private Long idEndereco;
-	private String nomeLocal;
-	private String logradouro;
-	private String numLocal;
+	
+	@NotEmpty(message = "You didn't enter your Local!") private String nomeLocal;
+	@NotEmpty(message = "You didn't enter your logradouro!") private String logradouro;
+	@NotEmpty(message = "You didn't enter your numLocal!") private String numLocal;
 	private String complemento;
-	private String bairro;
-	private String localidade;
-	private String uf;
-	private String cep;
+	@NotEmpty(message = "You didn't enter your bairro!") private String bairro;
+	@NotEmpty(message = "You didn't enter your localidade!") private String localidade;
+	@NotEmpty(message = "You didn't enter your uf!") private String uf;
+	@NotEmpty(message = "You didn't enter your cep!") private String cep;
 	
 	
 	public EnderecoDTO() {}

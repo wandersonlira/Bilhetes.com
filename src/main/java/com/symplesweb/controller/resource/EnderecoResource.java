@@ -24,6 +24,8 @@ import com.symplesweb.controller.feignClient.viacep.EnderecoViacepClient;
 import com.symplesweb.controller.services.EnderecoService;
 import com.symplesweb.model.entities.Endereco;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/enderecos")
 public class EnderecoResource {
@@ -36,7 +38,7 @@ public class EnderecoResource {
 	
 	
 	@PostMapping
-	public ResponseEntity<EnderecoDTOView> saveEndereco(@RequestBody EnderecoDTO enderecoDto) {
+	public ResponseEntity<EnderecoDTOView> saveEndereco(@RequestBody @Valid EnderecoDTO enderecoDto) {
 		
 		Endereco address = enderecoDto.toEntity();
 		
@@ -76,7 +78,7 @@ public class EnderecoResource {
 	
 	@PatchMapping
 	public ResponseEntity<EnderecoDTOView> updateEndereco(@RequestParam(value = "idEndereco") Long idEndereco,
-			@RequestBody EnderecoUpdateDto enderecoUpdateDto) {
+			@RequestBody @Valid EnderecoUpdateDto enderecoUpdateDto) {
 		
 		Endereco addressSave = this.service.findById(idEndereco);
 		Endereco addressUpdate = null;
