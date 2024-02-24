@@ -33,6 +33,13 @@ public class ParticipanteService {
 	
 	
 	
+	public Participante findByCpf(String cpf) {
+		Optional<Participante> objetoParticipante = this.repository.findByCpf(cpf);
+		return objetoParticipante.orElseThrow(() -> new ResourceNotFoundException(cpf));
+	}
+	
+	
+	
 	public Participante save(Participante participante) {
 		return repository.save(participante);
 	}

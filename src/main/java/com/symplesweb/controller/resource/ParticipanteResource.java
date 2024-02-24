@@ -23,6 +23,8 @@ import com.symplesweb.controller.dto.view.ParticipanteDtoView;
 import com.symplesweb.controller.services.ParticipanteService;
 import com.symplesweb.model.entities.Participante;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/participantes")
 public class ParticipanteResource {
@@ -33,7 +35,7 @@ public class ParticipanteResource {
 	
 	
 	@PostMapping
-	public ResponseEntity<ParticipanteDtoView> save(@RequestBody ParticipanteDto participanteDto) {
+	public ResponseEntity<ParticipanteDtoView> save(@RequestBody @Valid ParticipanteDto participanteDto) {
 		
 		Participante entityParticipante = participanteDto.toEntity();
 		
@@ -60,9 +62,16 @@ public class ParticipanteResource {
 	}
 	
 	
+	@GetMapping(value = "/search/{cpf}")
+	public ResponseEntity<ParticipanteDtoView> findByCpf(@PathVariable String cpf) {
+		Participante objetoParticipante = this.service.findByCpf(cpf);
+		return ResponseEntity.status(HttpStatus.OK).body(new ParticipanteDtoView(objetoParticipante));
+	}
+	
+	
 	@PatchMapping
 	public ResponseEntity<ParticipanteDtoView> updateParticipante(@RequestParam(value = "participanteId") Long idParticipante, 
-			@RequestBody ParticipanteUpdateDto participanteUpdateDto) {
+			@RequestBody @Valid ParticipanteUpdateDto participanteUpdateDto) {
 		
 	Participante entityParticipante = this.service.findById(idParticipante);
 	entityParticipante = participanteUpdateDto.toEntity(entityParticipante);

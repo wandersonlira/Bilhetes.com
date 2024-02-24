@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -20,9 +21,9 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandarError> resourceNotFound(ResourceNotFoundException notFoundException,
 			HttpServletRequest request) {
 		
-		String error = "Resource not Found";
+		String error = "Not Found! Consult the documentation";
 		HttpStatus status = HttpStatus.NOT_FOUND;
-		StandarError err = new StandarError(Instant.now(), status.value(), error, 
+		StandarError err = new StandarError(error, Instant.now(), status.value(), 
 				notFoundException.getMessage(), request.getRequestURI());
 		
 		return ResponseEntity.status(status).body(err);
@@ -34,10 +35,23 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandarError> database(DatabaseException notFoundException,
 			HttpServletRequest request) {
 		
-		String error = "Resource not Found";
+		String error = "Bad Request! Consult the documentation";
 		HttpStatus status = HttpStatus.BAD_REQUEST;
-		StandarError err = new StandarError(Instant.now(), status.value(), error, 
+		StandarError err = new StandarError(error, Instant.now(), status.value(), 
 				notFoundException.getMessage(), request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<StandarError> handlerValidException(MethodArgumentNotValidException exception, 
+			HttpServletRequest request) {
+		
+		String error = "Bad Request! Consult the documentation";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandarError err = new StandarError(error, Instant.now(), status.value(), exception.getMessage(), request.getRequestURI());
 		
 		return ResponseEntity.status(status).body(err);
 	}
