@@ -1,6 +1,7 @@
 package com.symplesweb.controller.services;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,27 @@ public class EnderecoService {
 	}
 	
 	
+	public Endereco findByCEP(String cep) {
+		Optional<Endereco> objetoEndereco = this.repository.findByCEP(cep);
+		return objetoEndereco.get();
+	}
+	
+	
 	public Endereco save(Endereco endereco) {
-		return repository.save(endereco);
+		Endereco address = null;
+		try {
+			Endereco entity = this.findByCEP(endereco.getCep());
+			if (endereco.getCep().equals(entity.getCep()) && endereco.getNomeLocal().equals(entity.getNomeLocal())
+					&& endereco.getNumLocal().equals(entity.getNumLocal())) {
+				
+				address = entity;
+			}
+		} catch (NoSuchElementException e) {
+			address = repository.save(endereco);
+		}
+		
+		return address;
+		
 	}
 	
 	

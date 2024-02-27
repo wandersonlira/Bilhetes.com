@@ -1,5 +1,6 @@
 package com.symplesweb.controller.resource.exception;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.Instant;
 import java.util.NoSuchElementException;
 
@@ -80,6 +81,21 @@ public class ResourceExceptionHandler {
 		
 		String error = "Bad Request! Consult the documentation";
 		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandarError standarError = new StandarError(error, Instant.now(), status.value(),
+				exception.getMessage(), request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(standarError);
+	}
+	
+	
+	
+	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+	public ResponseEntity<StandarError> handlerDataAccessViolationException(
+			SQLIntegrityConstraintViolationException exception,
+			HttpServletRequest request) {
+		
+		String error = "Bad Conflit! Consult the documentation";
+		HttpStatus status = HttpStatus.CONFLICT;
 		StandarError standarError = new StandarError(error, Instant.now(), status.value(),
 				exception.getMessage(), request.getRequestURI());
 		

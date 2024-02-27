@@ -46,6 +46,7 @@ public class EnderecoResource {
 		addressApiToSave.setNomeLocal(address.getNomeLocal());
 		addressApiToSave.setNumLocal(address.getNumLocal());
 		
+		
 		Endereco addressSaved = this.service.save(addressApiToSave);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(new EnderecoDTOView(addressSaved));
@@ -72,6 +73,14 @@ public class EnderecoResource {
 		List<EnderecoDTOView> listEnderecos = service.findByLogradouro(logradouro)
 				.stream().map(endereco -> new EnderecoDTOView(endereco)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listEnderecos);
+	}
+	
+	
+	
+	@GetMapping(value = "/cep/{cep}")
+	public ResponseEntity<Endereco> findByCEP(@PathVariable String cep) {
+		Endereco endereco = this.service.findByCEP(cep);
+		return ResponseEntity.status(HttpStatus.OK).body(endereco);
 	}
 	
 	
