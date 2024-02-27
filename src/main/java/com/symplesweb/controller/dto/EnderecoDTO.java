@@ -1,5 +1,6 @@
 package com.symplesweb.controller.dto;
 
+import com.symplesweb.controller.cepUtils.CepUtil;
 import com.symplesweb.model.entities.Endereco;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -50,7 +51,9 @@ public class EnderecoDTO {
 	
 	
 	public Endereco toEntity() {
-		Endereco address = new Endereco(this.cep, this.logradouro, this.complemento, this.bairro, this.localidade, this.uf,
+		Endereco address = new Endereco(CepUtil.removeMascaraCep(this.cep), this.logradouro, this.complemento, this.bairro,
+				this.localidade,
+				this.uf,
 				null,
 				null,
 				null,
@@ -59,8 +62,9 @@ public class EnderecoDTO {
 				this.nomeLocal,
 				this.numLocal);
 		return address;
-				
 	}
+	
+	
 
 	
 

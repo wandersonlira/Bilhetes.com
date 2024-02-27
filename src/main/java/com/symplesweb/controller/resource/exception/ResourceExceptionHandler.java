@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.symplesweb.controller.cepUtils.exception.ViaCepFormatException;
 import com.symplesweb.controller.services.exceptions.DatabaseException;
 import com.symplesweb.controller.services.exceptions.ResourceNotFoundException;
 
@@ -69,6 +70,20 @@ public class ResourceExceptionHandler {
 				exception.getMessage(), request.getRequestURI());
 		
 		return ResponseEntity.status(status).body(standError);
+	} // Verificar se existe funcionalidade para essa exceção
+	
+	
+	
+	@ExceptionHandler(ViaCepFormatException.class)
+	public ResponseEntity<StandarError> handlerValidationCepException (ViaCepFormatException exception,
+			HttpServletRequest request) {
+		
+		String error = "Bad Request! Consult the documentation";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandarError standarError = new StandarError(error, Instant.now(), status.value(),
+				exception.getMessage(), request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(standarError);
 	}
 
 }
