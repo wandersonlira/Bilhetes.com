@@ -1,5 +1,6 @@
 package com.symplesweb.controller.resource;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ import com.symplesweb.controller.dto.EventoUpdateDto;
 import com.symplesweb.controller.dto.view.EventoDTOView;
 import com.symplesweb.controller.services.EnderecoService;
 import com.symplesweb.controller.services.EventoService;
+import com.symplesweb.controller.services.exceptions.DatabaseException;
 import com.symplesweb.model.entities.Endereco;
 import com.symplesweb.model.entities.Evento;
 
@@ -47,7 +49,7 @@ public class EventoResource {
 		
 		entityEvento.setEndereco(entityEndereco);
 		
-		this.service.save(entityEvento);
+		this.service.save(validaDataEvento(entityEvento));
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(new EventoDTOView(entityEvento));
 	}
@@ -98,6 +100,7 @@ public class EventoResource {
 		}
 		
 		Evento eventoToUpdate = eventoUpdateDto.toEntity(entityEvento);
+		comparaDataAtual(eventoToUpdate);
 		Evento eventoUpdated = this.service.save(eventoToUpdate);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(new EventoDTOView(eventoUpdated));
@@ -108,6 +111,36 @@ public class EventoResource {
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void deleteById(@PathVariable Long idEvento) {
 			this.service.deleteById(idEvento);
+	}
+	
+	
+	
+	private Evento validaDataEvento(Evento evento) {
+		Endereco endereco = this.enderecoService.findById(evento.getEndereco().getIdEndereco());
+		
+		if (evento.getDataEvento().getDayOfYear() >= LocalDate.now().getDayOfYear() 
+				&& evento.getDataEvento().getMonthValue() >= LocalDate.now().getMonthValue()
+				&& evento.getDataEvento().getYear() >= LocalDate.now().getYear()) {
+			for (Evento listEvento : endereco.getEventos()) {
+				if (evento.getDataEvento().equals(listEvento.getDataEvento())) {
+					throw new DatabaseException("Já existe evento nesta data!");
+				}
+			}
+			return evento;
+			
+		} else {
+			throw new DatabaseException("Data informada é menor que a data atual!");
+		}
+	}
+	
+	
+	private void comparaDataAtual(Evento evento) {
+		if (evento.getDataEvento().getDayOfYear() >= LocalDate.now().getDayOfYear() 
+				&& evento.getDataEvento().getMonthValue() >= LocalDate.now().getMonthValue()
+				&& evento.getDataEvento().getYear() >= LocalDate.now().getYear()) {
+		} else {
+			throw new DatabaseException("Data informada é menor que a data atual!");
+		}
 	}
 	
 
