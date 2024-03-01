@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +24,9 @@ public class Participante implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idParticipante;
 	private String nomeParticipante;
+	@Column(nullable = false, unique = true)
 	private String cpf;
+	@Column(nullable = false, unique = true)
 	private String email;
 
 	@OneToMany(mappedBy = "participante")

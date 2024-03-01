@@ -3,15 +3,12 @@ package com.symplesweb.config;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import com.symplesweb.controller.dto.EnderecoDTO;
-import com.symplesweb.controller.dto.view.EnderecoDTOView;
 import com.symplesweb.controller.repositories.EnderecoRepository;
 import com.symplesweb.controller.repositories.EventoRepository;
 import com.symplesweb.controller.repositories.ParticipanteEventoRepository;

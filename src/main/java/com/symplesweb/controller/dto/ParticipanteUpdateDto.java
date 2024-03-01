@@ -2,11 +2,16 @@ package com.symplesweb.controller.dto;
 
 import com.symplesweb.model.entities.Participante;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+
 public class ParticipanteUpdateDto {
 	
 	
-	
+	@NotEmpty(message = "You didn't write your name!")
 	private String nomeParticipante;
+	@NotEmpty(message = "Yout didn't write your e-mail")
+	@Email(message = "You entered an invalid e-mail")
 	private String email;
 	
 	
@@ -16,8 +21,6 @@ public class ParticipanteUpdateDto {
 		participante.setCpf(this.email);
 		return participante;
 	}
-	
-	
 	
 	
 	

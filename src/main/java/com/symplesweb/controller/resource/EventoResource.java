@@ -1,5 +1,6 @@
 package com.symplesweb.controller.resource;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,8 +23,11 @@ import com.symplesweb.controller.dto.EventoUpdateDto;
 import com.symplesweb.controller.dto.view.EventoDTOView;
 import com.symplesweb.controller.services.EnderecoService;
 import com.symplesweb.controller.services.EventoService;
+import com.symplesweb.controller.services.exceptions.DatabaseException;
 import com.symplesweb.model.entities.Endereco;
 import com.symplesweb.model.entities.Evento;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/eventos")
@@ -39,14 +42,14 @@ public class EventoResource {
 	
 	
 	@PostMapping
-	public ResponseEntity<EventoDTOView> save(@RequestBody EventoDto eventoDto) {
+	public ResponseEntity<EventoDTOView> save(@RequestBody @Valid EventoDto eventoDto) {
 		
 		Evento entityEvento = eventoDto.toEntity();
 		Endereco entityEndereco = this.enderecoService.findById(eventoDto.getIdEndereco());
 		
 		entityEvento.setEndereco(entityEndereco);
 		
-		this.service.save(entityEvento);
+		this.service.save(validaDataEvento(entityEvento));
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(new EventoDTOView(entityEvento));
 	}
@@ -85,7 +88,7 @@ public class EventoResource {
 	
 	@PatchMapping
 	public ResponseEntity<EventoDTOView> updateEvento(@RequestParam(value = "eventoId") Long IdEvento,
-			@RequestBody EventoUpdateDto eventoUpdateDto) {
+			@RequestBody @Valid EventoUpdateDto eventoUpdateDto) {
 		
 		Evento entityEvento = this.service.findById(IdEvento);
 		
@@ -97,6 +100,7 @@ public class EventoResource {
 		}
 		
 		Evento eventoToUpdate = eventoUpdateDto.toEntity(entityEvento);
+		comparaDataAtual(eventoToUpdate);
 		Evento eventoUpdated = this.service.save(eventoToUpdate);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(new EventoDTOView(eventoUpdated));
@@ -106,9 +110,38 @@ public class EventoResource {
 	@DeleteMapping(value = "/{idEvento}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void deleteById(@PathVariable Long idEvento) {
-		this.service.deleteById(idEvento);
+			this.service.deleteById(idEvento);
 	}
 	
+	
+	
+	private Evento validaDataEvento(Evento evento) {
+		Endereco endereco = this.enderecoService.findById(evento.getEndereco().getIdEndereco());
+		
+		if (evento.getDataEvento().getDayOfYear() >= LocalDate.now().getDayOfYear() 
+				&& evento.getDataEvento().getMonthValue() >= LocalDate.now().getMonthValue()
+				&& evento.getDataEvento().getYear() >= LocalDate.now().getYear()) {
+			for (Evento listEvento : endereco.getEventos()) {
+				if (evento.getDataEvento().equals(listEvento.getDataEvento())) {
+					throw new DatabaseException("Já existe evento nesta data!");
+				}
+			}
+			return evento;
+			
+		} else {
+			throw new DatabaseException("Data informada é menor que a data atual!");
+		}
+	}
+	
+	
+	private void comparaDataAtual(Evento evento) {
+		if (evento.getDataEvento().getDayOfYear() >= LocalDate.now().getDayOfYear() 
+				&& evento.getDataEvento().getMonthValue() >= LocalDate.now().getMonthValue()
+				&& evento.getDataEvento().getYear() >= LocalDate.now().getYear()) {
+		} else {
+			throw new DatabaseException("Data informada é menor que a data atual!");
+		}
+	}
 	
 
 }
