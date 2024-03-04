@@ -9,7 +9,6 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,6 +39,9 @@ public class Evento implements Serializable{
 	private Endereco endereco;
 	@OneToMany(mappedBy = "evento")
 	private Set<ParticipanteEvento> participanteEvento = new HashSet<>();
+	@ManyToOne
+	@JoinColumn(name = "chave_id_produtor", nullable = true)
+	private Produtor produtor;
 
 
 
