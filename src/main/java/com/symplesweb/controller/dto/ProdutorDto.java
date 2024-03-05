@@ -12,7 +12,7 @@ public class ProdutorDto implements Serializable{
 	private String lastName;
 	private String email;
 	private String password;
-	private Long id_evento;
+	private Long id_evento = null;
 	
 	
 	public ProdutorDto(String firstName, String lastName, String email, String password, Long id_evento) {

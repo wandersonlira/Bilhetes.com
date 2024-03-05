@@ -45,6 +45,14 @@ public class Evento implements Serializable{
 
 
 
+	public Produtor getProdutor() {
+		return produtor;
+	}
+
+	public void setProdutor(Produtor produtor) {
+		this.produtor = produtor;
+	}
+
 	@Deprecated
 	public Evento() {}
 	

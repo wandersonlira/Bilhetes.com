@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +30,7 @@ public class Produtor implements Serializable{
 	private String password;
 	
 	@OneToMany(mappedBy = "produtor")
-	private List<Evento> listEventos = new ArrayList<Evento>();
+	private List<Evento> listEventos = new ArrayList<>();
 	
 	
 	public Produtor() {}
@@ -85,15 +87,15 @@ public class Produtor implements Serializable{
 		this.password = password;
 	}
 
-
+	@JsonIgnore
 	public List<Evento> getListEventos() {
 		return listEventos;
 	}
+	
 
-
-	public void setListEventos(List<Evento> listEventos) {
-		this.listEventos = listEventos;
-	}
+//	public void setListEventos(List<Evento> listEventos) {
+//		this.listEventos = listEventos;
+//	}
 
 
 	public Long getId_produtor() {
@@ -123,8 +125,11 @@ public class Produtor implements Serializable{
 	@Override
 	public String toString() {
 		return "Produtor [id_produtor=" + id_produtor + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + ", password=" + password + "]";
+				+ ", email=" + email + ", password=" + password + ", listEventos=" + listEventos + "]";
 	}
+
+
+
 	
 
 	

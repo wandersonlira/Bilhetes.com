@@ -21,6 +21,7 @@ public class EventoDto {
 	private Integer ingressoComprado; // será excluido
 	@NotNull(message = "The value 'endereco' cannot be null!")
 	private Long idEndereco;
+	private Long idProdutor;
 	
 	
 	
@@ -121,7 +122,13 @@ public class EventoDto {
 		this.idEndereco = idEndereco;
 	}
 	
+	public Long getIdProdutor() {
+		return idProdutor;
+	}
 	
+	public void setIdProdutor(Long idProdutor) {
+		this.idProdutor = idProdutor;
+	}
 	
 	
 

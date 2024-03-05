@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.symplesweb.controller.dto.ProdutorDto;
 import com.symplesweb.controller.dto.ProdutorUpdateDto;
+import com.symplesweb.controller.dto.view.ProdutorDtoView;
 import com.symplesweb.controller.services.EventoService;
 import com.symplesweb.controller.services.ProdutorService;
 import com.symplesweb.model.entities.Evento;
@@ -31,37 +32,40 @@ public class ProdutorResource {
 	
 	@Autowired
 	private ProdutorService service;
-//	@Autowired
-//	private EventoService eventoService;
+	@Autowired
+	private EventoService eventoService;
 	
 	
 	
 	@PostMapping
-	public ResponseEntity<Produtor> save(@RequestBody ProdutorDto produtorDto) {
-//		Evento eventoToSave = this.eventoService.findById(produtorDto.getId_evento()); busca o evento no banco
-		Produtor produtorToSave = produtorDto.toEntity();
-		
-//		produtorToSave.getListEventos().add(eventoToSave); adiciona um evento na lista de produtor
-		
-		Produtor entityProdutor = this.service.save(produtorToSave);
-		return ResponseEntity.status(HttpStatus.CREATED).body(entityProdutor);
+	public ResponseEntity<ProdutorDtoView> save(@RequestBody ProdutorDto produtorDto) {
+		Produtor produtorToSave = null;
+		if (produtorDto.getId_evento() != null) {
+			Evento eventoToSave = this.eventoService.findById(produtorDto.getId_evento()); // usca o evento no banco
+			produtorToSave = produtorDto.toEntity();
+			produtorToSave.getListEventos().add(eventoToSave); // adiciona um evento na lista de produtor
+		} else {
+			produtorToSave = produtorDto.toEntity();
+		}
+		Produtor produtorSaved = this.service.save(produtorToSave);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new ProdutorDtoView(produtorSaved));
 	}
 	
 	
 	
 	@GetMapping
-	public ResponseEntity<List<Produtor>> findAll() {
-		List<Produtor> listProdutor = this.service.findAll().stream()
-				.map(produtor -> new Produtor())
+	public ResponseEntity<List<ProdutorDtoView>> findAll() {
+		List<ProdutorDtoView> listProdutor = this.service.findAll().stream()
+				.map(produtor -> new ProdutorDtoView(produtor))
 				.collect(Collectors.toList());
 		return ResponseEntity.status(HttpStatus.OK).body(listProdutor);
 	}
 	
 	
 	@GetMapping(value = "/{id_produtor}")
-	public ResponseEntity<Produtor> findById(@PathVariable Long id_produtor) {
+	public ResponseEntity<ProdutorDtoView> findById(@PathVariable Long id_produtor) {
 		Produtor produtor = service.findById(id_produtor);
-		return ResponseEntity.status(HttpStatus.OK).body(produtor);
+		return ResponseEntity.status(HttpStatus.OK).body(new ProdutorDtoView(produtor));
 	}
 	
 	

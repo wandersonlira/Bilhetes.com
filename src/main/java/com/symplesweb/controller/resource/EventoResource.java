@@ -23,9 +23,11 @@ import com.symplesweb.controller.dto.EventoUpdateDto;
 import com.symplesweb.controller.dto.view.EventoDTOView;
 import com.symplesweb.controller.services.EnderecoService;
 import com.symplesweb.controller.services.EventoService;
+import com.symplesweb.controller.services.ProdutorService;
 import com.symplesweb.controller.services.exceptions.DatabaseException;
 import com.symplesweb.model.entities.Endereco;
 import com.symplesweb.model.entities.Evento;
+import com.symplesweb.model.entities.Produtor;
 
 import jakarta.validation.Valid;
 
@@ -38,6 +40,8 @@ public class EventoResource {
 	private EventoService service;
 	@Autowired
 	private EnderecoService enderecoService;
+	@Autowired
+	private ProdutorService produtorService;
 	
 	
 	
@@ -46,8 +50,11 @@ public class EventoResource {
 		
 		Evento entityEvento = eventoDto.toEntity();
 		Endereco entityEndereco = this.enderecoService.findById(eventoDto.getIdEndereco());
+		Produtor entityProdutor = this.produtorService.findById(eventoDto.getIdProdutor());
 		
 		entityEvento.setEndereco(entityEndereco);
+		entityEvento.setProdutor(entityProdutor);
+		// Refatorar este código para arrumar a inserção do produtor para associar cada evento ao produtor
 		
 		this.service.save(validaDataEvento(entityEvento));
 		
