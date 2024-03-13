@@ -101,5 +101,17 @@ public class ResourceExceptionHandler {
 		
 		return ResponseEntity.status(status).body(standarError);
 	}
+	
+	
+	@ExceptionHandler(InvalidUpdateException.class)
+	public ResponseEntity<StandarError> handlerInvalidUpdateException(InvalidUpdateException exception, 
+			HttpServletRequest request) {
+		String error = "Bad Conflit! Consult the documentation";
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		StandarError standError = new StandarError(error, Instant.now(), status.value(),
+				exception.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(standError);
+	}
+	
 
 }

@@ -20,9 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.symplesweb.controller.dto.ProdutorDto;
 import com.symplesweb.controller.dto.ProdutorUpdateDto;
 import com.symplesweb.controller.dto.view.ProdutorDtoView;
-import com.symplesweb.controller.services.EventoService;
+import com.symplesweb.controller.resource.exception.InvalidUpdateException;
 import com.symplesweb.controller.services.ProdutorService;
-import com.symplesweb.model.entities.Evento;
 import com.symplesweb.model.entities.Produtor;
 
 
@@ -32,21 +31,12 @@ public class ProdutorResource {
 	
 	@Autowired
 	private ProdutorService service;
-	@Autowired
-	private EventoService eventoService;
 	
 	
 	
 	@PostMapping
 	public ResponseEntity<ProdutorDtoView> save(@RequestBody ProdutorDto produtorDto) {
-		Produtor produtorToSave = null;
-		if (produtorDto.getId_evento() != null) {
-			Evento eventoToSave = this.eventoService.findById(produtorDto.getId_evento()); // usca o evento no banco
-			produtorToSave = produtorDto.toEntity();
-			produtorToSave.getListEventos().add(eventoToSave); // adiciona um evento na lista de produtor
-		} else {
-			produtorToSave = produtorDto.toEntity();
-		}
+		Produtor produtorToSave = produtorDto.toEntity();
 		Produtor produtorSaved = this.service.save(produtorToSave);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new ProdutorDtoView(produtorSaved));
 	}
@@ -55,8 +45,7 @@ public class ProdutorResource {
 	
 	@GetMapping
 	public ResponseEntity<List<ProdutorDtoView>> findAll() {
-		List<ProdutorDtoView> listProdutor = this.service.findAll().stream()
-				.map(produtor -> new ProdutorDtoView(produtor))
+		List<ProdutorDtoView> listProdutor = this.service.findAll().stream().map(produtor -> new ProdutorDtoView(produtor))
 				.collect(Collectors.toList());
 		return ResponseEntity.status(HttpStatus.OK).body(listProdutor);
 	}
@@ -71,7 +60,7 @@ public class ProdutorResource {
 	
 	
 	@PatchMapping
-	public ResponseEntity<Produtor> updateProdutor(
+	public ResponseEntity<ProdutorDtoView> updateProdutor(
 			@RequestParam(value = "id_produtor") Long id_produtor,
 			@RequestBody ProdutorUpdateDto produtorUpdateDto) {
 		
@@ -84,9 +73,9 @@ public class ProdutorResource {
 			Produtor produtorToSave = produtorUpdateDto.toEntity(produtorToUpdate);
 			produtorSaved = this.service.save(produtorToSave);
 		} else {
-			System.err.println("Os dados são iguais!");
+			throw new InvalidUpdateException("Update não autorizado! Os dados informados são iguais");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(produtorSaved);
+		return ResponseEntity.status(HttpStatus.OK).body(new ProdutorDtoView(produtorSaved));
 	}
 	
 	

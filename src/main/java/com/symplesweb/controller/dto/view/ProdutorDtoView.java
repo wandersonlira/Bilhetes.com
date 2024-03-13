@@ -11,7 +11,7 @@ import com.symplesweb.model.entities.Produtor;
 public class ProdutorDtoView implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	
+	private Long id_produtor;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -22,6 +22,7 @@ public class ProdutorDtoView implements Serializable{
 	
 	
 	public ProdutorDtoView(Produtor projection) {
+		this.id_produtor = projection.getId_produtor();
 		this.firstName = projection.getFirstName();
 		this.lastName = projection.getLastName();
 		this.email = projection.getEmail();
@@ -34,6 +35,10 @@ public class ProdutorDtoView implements Serializable{
 	}
 
 
+	public Long getId_produtor() {
+		return id_produtor;
+	}
+	
 
 	public String getFirstName() {
 		return firstName;
@@ -69,9 +74,6 @@ public class ProdutorDtoView implements Serializable{
 	public void setListEventos(List<EventoOutputParticipante> listEventos) {
 		this.listEventos = listEventos;
 	}
-	
-	
-	
-	
+
 
 }
