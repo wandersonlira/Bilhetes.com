@@ -20,8 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.symplesweb.controller.dto.EnderecoDTO;
 import com.symplesweb.controller.dto.EnderecoUpdateDto;
 import com.symplesweb.controller.dto.view.EnderecoDTOView;
+import com.symplesweb.controller.feignClient.viacep.EnderecoViacepClient;
 import com.symplesweb.controller.services.EnderecoService;
 import com.symplesweb.model.entities.Endereco;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/enderecos")
@@ -29,16 +32,24 @@ public class EnderecoResource {
 	
 	@Autowired
 	private EnderecoService service;
+	@Autowired
+	private EnderecoViacepClient feignClient;
 	
 	
 	
 	@PostMapping
-	public ResponseEntity<EnderecoDTOView> saveEndereco(@RequestBody EnderecoDTO enderecoDto) {
+	public ResponseEntity<EnderecoDTOView> saveEndereco(@RequestBody @Valid EnderecoDTO enderecoDto) {
 		
-		Endereco entityEndereco = enderecoDto.toEntity();
-		entityEndereco = this.service.save(entityEndereco);
+		Endereco address = enderecoDto.toEntity();
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(new EnderecoDTOView(entityEndereco));
+		Endereco addressApiToSave = this.feignClient.apiEndereco(enderecoDto.getCep());
+		addressApiToSave.setNomeLocal(address.getNomeLocal());
+		addressApiToSave.setNumLocal(address.getNumLocal());
+		
+		
+		Endereco addressSaved = this.service.save(addressApiToSave);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(new EnderecoDTOView(addressSaved));
 	}
 	
 	
@@ -66,15 +77,41 @@ public class EnderecoResource {
 	
 	
 	
+	@GetMapping(value = "/cep/{cep}")
+	public ResponseEntity<Endereco> findByCEP(@PathVariable String cep) {
+		Endereco endereco = this.service.findByCEP(cep);
+		return ResponseEntity.status(HttpStatus.OK).body(endereco);
+	}
+	
+	
+	
 	@PatchMapping
 	public ResponseEntity<EnderecoDTOView> updateEndereco(@RequestParam(value = "idEndereco") Long idEndereco,
-			@RequestBody EnderecoUpdateDto enderecoUpdateDto) {
+			@RequestBody @Valid EnderecoUpdateDto enderecoUpdateDto) {
 		
-		Endereco entityEndereco = this.service.findById(idEndereco);
-		entityEndereco = enderecoUpdateDto.toEntity(entityEndereco);
-		Endereco enderecoToUpdated = this.service.save(entityEndereco);
+		Endereco addressSave = this.service.findById(idEndereco);
+		Endereco addressUpdate = null;
 		
-		return ResponseEntity.status(HttpStatus.OK).body(new EnderecoDTOView(enderecoToUpdated));
+		if (!enderecoUpdateDto.getCep().equals(addressSave.getCep())) {
+			System.out.println("CONDIÇÃO IF - " + enderecoUpdateDto.getCep() + " != " + addressSave.getCep());
+			addressSave = enderecoUpdateDto.toEntity(addressSave);
+			
+			Endereco addressApiToUpdate = this.feignClient.apiEndereco(addressSave.getCep());
+			addressApiToUpdate.setIdEndereco(idEndereco);
+			addressApiToUpdate.setNomeLocal(addressSave.getNomeLocal());
+			addressApiToUpdate.setNumLocal(addressSave.getNumLocal());
+			
+			addressUpdate = addressApiToUpdate;
+			
+		} else {
+			System.out.println("CONDIÇÃO ELSE - " + enderecoUpdateDto.getCep() + " == " + addressSave.getCep());
+			addressUpdate = enderecoUpdateDto.toEntity(addressSave);
+		}
+		
+		addressUpdate = this.service.save(addressUpdate);
+		
+		
+		return ResponseEntity.status(HttpStatus.OK).body(new EnderecoDTOView(addressUpdate));
 	}
 	
 	
@@ -84,6 +121,7 @@ public class EnderecoResource {
 	public void deleteById(@PathVariable Long idEndereco) {
 		this.service.deleteById(idEndereco);
 	}
+	
 	
 
 }
