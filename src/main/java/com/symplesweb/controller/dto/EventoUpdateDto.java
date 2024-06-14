@@ -5,12 +5,20 @@ import java.time.LocalDateTime;
 
 import com.symplesweb.model.entities.Evento;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 public class EventoUpdateDto {
 	
+	@NotEmpty(message = "You didn't enter your Name!")
 	private String nomeEvento;
+	@NotNull(message = "The value 'Data' cannot be null!") 
 	private LocalDate dataEvento;
+	@NotNull(message = "The value 'Hora' cannot be null!")
 	private LocalDateTime horaEvento;
+	@NotNull(message = "The value 'Ingressos' cannot be null!")
 	private Integer ingressos;
+	@NotNull(message = "The value 'Endereco' cannot be null!")
 	private Long idEndereco;
 	
 	
