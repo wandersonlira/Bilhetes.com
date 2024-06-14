@@ -2,8 +2,8 @@ package com.symplesweb.model.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +23,8 @@ public class ParticipanteEvento implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_ParticipanteEvento;
 	
-	
+	private UUID ticketCode = UUID.randomUUID();
+
 	@ManyToOne
 	@JoinColumn(name = "chave_id_participante")
 	private Participante participante;
@@ -51,6 +52,14 @@ public class ParticipanteEvento implements Serializable{
 
 	public Participante getParticipante() {
 		return participante;
+	}
+	
+	public UUID getTicketCode() {
+		return ticketCode;
+	}
+
+	public void setTicketCode(UUID ticketCode) {
+		this.ticketCode = ticketCode;
 	}
 
 	public void setParticipante(Participante participante) {

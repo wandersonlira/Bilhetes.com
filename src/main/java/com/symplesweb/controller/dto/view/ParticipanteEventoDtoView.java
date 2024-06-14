@@ -2,6 +2,7 @@ package com.symplesweb.controller.dto.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.symplesweb.model.entities.ParticipanteEvento;
 
@@ -9,6 +10,7 @@ public class ParticipanteEventoDtoView {
 	
 	
 	private Long participanteEventoDtoView;
+	private UUID ticketCode;
 	private ParticipanteDtoView participanteDtoView = new ParticipanteDtoView();
 	private List<EventoOutputParticipante> listEventoDto = new ArrayList<EventoOutputParticipante>();
 	
@@ -21,6 +23,7 @@ public class ParticipanteEventoDtoView {
 	public ParticipanteEventoDtoView(ParticipanteEvento projection) {
 		
 		participanteEventoDtoView = projection.getId_ParticipanteEvento();
+		ticketCode = projection.getTicketCode();
 		
 		participanteDtoView.setIdParticipante(projection.getParticipante().getIdParticipante());
 		participanteDtoView.setNomeParticipante(projection.getParticipante().getNomeParticipante());
@@ -43,6 +46,14 @@ public class ParticipanteEventoDtoView {
 
 	public void setParticipanteEventoDtoView(Long participanteEventoDtoView) {
 		this.participanteEventoDtoView = participanteEventoDtoView;
+	}
+	
+	public UUID getTicketCode() {
+		return ticketCode;
+	}
+
+	public void setTicketCode(UUID ticketCode) {
+		this.ticketCode = ticketCode;
 	}
 
 
