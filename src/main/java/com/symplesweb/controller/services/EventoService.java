@@ -21,28 +21,39 @@ public class EventoService {
 	
 	
 	
-	public List<EventoDTOView> findAll() {
-		return repository.findAll().stream().map(x -> new EventoDTOView(x)).collect(Collectors.toList());
+	public Evento save(Evento evento) {
+		return this.repository.save(evento);
 	}
 	
 	
-	public EventoDTOView findById(Long id) {
+	public List<Evento> findAll() {
+		return repository.findAll();
+	}
+	
+	
+	public Evento findById(Long id) {
 		Optional<Evento> objEvento = repository.findById(id);
-		return new EventoDTOView(objEvento.get());
+		return objEvento.get();
 	}
 	
 	
-	public List<EventoDTOView> procuraPorLogradouro(String logradouro) {
+	public List<Evento> procuraPorLogradouro(String logradouro) {
 //		Optional<List<Evento>> objEvento = repository.procuraPorLogradouro(logradouro);
 		List<Evento> objEvento = repository.procuraPorLogradouro(logradouro);
-		return objEvento.stream().map(x -> new EventoDTOView(x)).collect(Collectors.toList());
+		return objEvento;
 	}
 	
 	
 //	@Transactional(readOnly = true)
-	public List<EventoDTOView> searchByNomeEvento(String nomeEvento) {
+	public List<Evento> searchByNomeEvento(String nomeEvento) {
 		Optional<List<Evento>> objetoEvento = repository.searchByNomeEvento(nomeEvento);
-		return objetoEvento.get().stream().map(x -> new EventoDTOView(x)).collect(Collectors.toList());
+		return objetoEvento.get();
+	}
+	
+	
+	public void deleteById(Long idEvento) {
+		Evento deleteEvento = this.findById(idEvento);
+		this.repository.delete(deleteEvento);
 	}
 	
 	

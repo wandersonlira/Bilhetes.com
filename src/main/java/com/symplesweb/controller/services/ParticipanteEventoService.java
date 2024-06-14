@@ -2,12 +2,10 @@ package com.symplesweb.controller.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.symplesweb.controller.dto.view.ParticipanteEventoDtoView;
 import com.symplesweb.controller.repositories.ParticipanteEventoRepository;
 import com.symplesweb.model.entities.ParticipanteEvento;
 
@@ -20,22 +18,33 @@ public class ParticipanteEventoService {
 	
 	
 	
-	public List<ParticipanteEventoDtoView> findAll(){
-		return repository.findAll().stream().map(participanteEvento -> new ParticipanteEventoDtoView(participanteEvento))
-				.collect(Collectors.toList());
+	public ParticipanteEvento save(ParticipanteEvento participanteEvento) {
+		return this.repository.save(participanteEvento);
 	}
 	
 	
-	public ParticipanteEventoDtoView findById(Long id) {
+	public List<ParticipanteEvento> findAll(){
+		return repository.findAll();
+	}
+	
+	
+	public ParticipanteEvento findById(Long id) {
 		Optional<ParticipanteEvento> objParticipanteEvento = repository.findById(id);
-		return new ParticipanteEventoDtoView(objParticipanteEvento.get());
+		return objParticipanteEvento.get();
 	}
 
 	
 //	@Transactional(readOnly = true)
-	public List<ParticipanteEventoDtoView> findReservaByCPF(String cpf) {
+	public List<ParticipanteEvento> findReservaByCPF(String cpf) {
 		Optional<List<ParticipanteEvento>> listParticipanteEvento = repository.findReservaByCPF(cpf);
-		return listParticipanteEvento.get().stream().map(participanteEvento -> new ParticipanteEventoDtoView(participanteEvento))
-				.collect(Collectors.toList());
+		return listParticipanteEvento.get();
 	}
+	
+	
+	public void deleteById(Long idParticipanteEvento) {
+		ParticipanteEvento deleteParticipanteEvento = this.findById(idParticipanteEvento);
+		this.repository.delete(deleteParticipanteEvento);
+	}
+	
+	
 }

@@ -1,10 +1,14 @@
 package com.symplesweb.controller.dto;
 
+import java.io.Serializable;
+
 import com.symplesweb.model.entities.Endereco;
 
-public class EnderecoDTO {
+public class EnderecoUpdateDto implements Serializable{
+	private static final long serialVersionUID = 1L;
 	
-	private Long idEndereco;
+	
+	
 	private String nomeLocal;
 	private String logradouro;
 	private String numLocal;
@@ -15,61 +19,21 @@ public class EnderecoDTO {
 	private String cep;
 	
 	
-	public EnderecoDTO() {}
 	
-
-//	public EnderecoDTO(Long idEndereco, String nomeLocal, String logradouro, String numLocal, String complemento,
-//			String bairro, String localidade, String uf, String cep) {
-//		super();
-//		this.idEndereco = idEndereco;
-//		this.nomeLocal = nomeLocal;
-//		this.logradouro = logradouro;
-//		this.numLocal = numLocal;
-//		this.complemento = complemento;
-//		this.bairro = bairro;
-//		this.localidade = localidade;
-//		this.uf = uf;
-//		this.cep = cep;
-//	}
-
-	
-//	public EnderecoDTO(Endereco projection) {
-//		idEndereco = projection.getIdEndereco();
-//		nomeLocal = projection.getNomeLocal();
-//		logradouro = projection.getLogradouro();
-//		numLocal = projection.getNumLocal();
-//		complemento = projection.getComplemento();
-//		bairro = projection.getBairro();
-//		localidade = projection.getLocalidade();
-//		uf = projection.getUf();
-//		cep = projection.getCep();
-//	}
-	
-	
-	public Endereco toEntity() {
-		Endereco address = new Endereco(this.cep, this.logradouro, this.complemento, this.bairro, this.localidade, this.uf,
-				null,
-				null,
-				null,
-				null,
-				null,
-				this.nomeLocal,
-				this.numLocal);
+	public Endereco toEntity(Endereco address) {
+		address.setNomeLocal(this.nomeLocal);
+		address.setLogradouro(this.logradouro);
+		address.setNumLocal(this.numLocal);
+		address.setComplemento(this.complemento);
+		address.setBairro(this.bairro);
+		address.setLocalidade(this.localidade);
+		address.setUf(this.uf);
+		address.setCep(this.cep);
 		return address;
-				
 	}
 
-	
 
-	public Long getIdEndereco() {
-		return idEndereco;
-	}
 
-	public void setIdEndereco(Long idEndereco) {
-		this.idEndereco = idEndereco;
-	}
-
-	
 	public String getNomeLocal() {
 		return nomeLocal;
 	}
@@ -77,6 +41,7 @@ public class EnderecoDTO {
 	public void setNomeLocal(String nomeLocal) {
 		this.nomeLocal = nomeLocal;
 	}
+
 
 
 	public String getLogradouro() {
@@ -88,6 +53,7 @@ public class EnderecoDTO {
 	}
 
 
+
 	public String getNumLocal() {
 		return numLocal;
 	}
@@ -95,6 +61,7 @@ public class EnderecoDTO {
 	public void setNumLocal(String numLocal) {
 		this.numLocal = numLocal;
 	}
+
 
 
 	public String getComplemento() {
@@ -106,6 +73,7 @@ public class EnderecoDTO {
 	}
 
 
+
 	public String getBairro() {
 		return bairro;
 	}
@@ -113,6 +81,7 @@ public class EnderecoDTO {
 	public void setBairro(String bairro) {
 		this.bairro = bairro;
 	}
+
 
 
 	public String getLocalidade() {
@@ -124,6 +93,7 @@ public class EnderecoDTO {
 	}
 
 
+
 	public String getUf() {
 		return uf;
 	}
@@ -133,6 +103,7 @@ public class EnderecoDTO {
 	}
 
 
+
 	public String getCep() {
 		return cep;
 	}
@@ -140,7 +111,10 @@ public class EnderecoDTO {
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
-
+	
+	
+	
+	
 	
 	
 

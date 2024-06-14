@@ -37,8 +37,8 @@ public class ParticipanteDtoView {
 		this.email = projection.getEmail();
 		
 		
-		for(Evento e : projection.getEvento()) {
-			EventoOutputParticipante novoEventoDto = new EventoOutputParticipante(e);
+		for(Evento evento : projection.getEvento()) {
+			EventoOutputParticipante novoEventoDto = new EventoOutputParticipante(evento);
 			
 			listEventoDto.add(novoEventoDto);
 		}
@@ -82,7 +82,7 @@ public class ParticipanteDtoView {
 	}
 
 
-
+	
 	public List<EventoOutputParticipante> getListEventoDto() {
 		return listEventoDto;
 	}
