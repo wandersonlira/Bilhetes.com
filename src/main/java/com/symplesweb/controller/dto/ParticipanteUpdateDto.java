@@ -18,7 +18,7 @@ public class ParticipanteUpdateDto {
 	
 	public Participante toEntity(Participante participante) {
 		participante.setNomeParticipante(this.nomeParticipante);
-		participante.setCpf(this.email);
+		participante.setEmail(this.email);
 		return participante;
 	}
 	
